@@ -1,0 +1,16 @@
+#!/bin/sh
+
+APPNAME="ChainXS"
+APPSCRIPT="./.build/apple/Products/Release/ChainXS"
+APPICONS="./Resources/AppIcon.icns"
+APPLOC="./product"
+APPDIR="$APPLOC/$APPNAME.app/Contents"
+
+swift build -c release --arch arm64 --arch x86_64
+
+rm -rf ./product
+mkdir -vp "$APPDIR"/{MacOS,Resources}
+cp -v "$APPICONS" "$APPDIR/Resources/$APPNAME.icns"
+cp -v "$APPSCRIPT" "$APPDIR/MacOS/$APPNAME"
+cp -v ./Resources/Info.plist "$APPDIR"
+chmod +x "$APPDIR/MacOS/$APPNAME"
