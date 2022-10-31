@@ -1,6 +1,6 @@
 # ChainXS
 
-ChainXS is a macOS Application built in Swift which facilitates derivation of SECP256K1 Elliptic Curve public/private keys and addresses from a private Mnemonic or an public/private Extended Key.
+ChainXS is a macOS Application built in Swift which facilitates derivation of SECP256K1 Elliptic Curve public/private keys and addresses from a private Mnemonic or a public/private Extended Key.
 
 ### Input
 * BIP39 Mnemonic (consisting of 12, 15, 18, 21 or 24 words)
