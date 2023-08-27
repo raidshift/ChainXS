@@ -74,6 +74,7 @@ struct ContentView: View {
     @State var results: [String] = []
     @State var isDisabledTextField = true
     @State var dividerSets = false
+    @State private var showingSheet = false
 
     var body: some View {
         ScrollView {
@@ -81,11 +82,14 @@ struct ContentView: View {
                 HStack {
                     Text("Mnemonic or Extended Key").font(.headline)
                     Spacer()
-                    Button(action: { userProvidedKeys.key = try! createMnemonic(16) }) { Text("🎲 12").font(.footnote).bold() }
-                    Button(action: { userProvidedKeys.key = try! createMnemonic(24) }) { Text("🎲 18").font(.footnote).bold() }
-                    Button(action: { userProvidedKeys.key = try! createMnemonic(32) }) { Text("🎲 24").font(.footnote).bold() }
+                    Button(action: { userProvidedKeys.key = try! createMnemonic(16) }) { Text("🎲 12 Words").font(.footnote).bold() }
+                    Button(action: { userProvidedKeys.key = try! createMnemonic(24) }) { Text("🎲 18 Words").font(.footnote).bold() }
+                    Button(action: { userProvidedKeys.key = try! createMnemonic(32) }) { Text("🎲 24 Words").font(.footnote).bold() }
                     Divider()
-                    Button(action: { userProvidedKeys.key = ""; userProvidedKeys.passphrase = "" }) { Text("✖️").font(.footnote).bold() }
+                    Button(action: { userProvidedKeys.key = ""; userProvidedKeys.passphrase = "" }) { Text("🗑️ Reset").font(.footnote).bold() }
+                    Divider()
+                    Button(action: { showingSheet.toggle() }) { Text("🔐 Save").font(.footnote).bold() }.disabled(derivationpathColor == FAILURE || mnemonicColor == FAILURE).sheet(isPresented: $showingSheet) { SheetView() }
+                    Button(action: { showingSheet.toggle() }) { Text("🔓 Load").font(.footnote).bold() }.sheet(isPresented: $showingSheet) { SheetView() }
                 }
                 CustomTextField(title: "enter mnemonic or extended key ...", text: $userProvidedKeys.key)
                     .foregroundColor(mnemonicColor)
