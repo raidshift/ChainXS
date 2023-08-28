@@ -17,6 +17,34 @@ let MONO_FONT = Font
     .system(size: 12)
     .monospaced()
 
+struct CustomTextField: View {
+    var title: String
+    var text: Binding<String>
+
+    var body: some View {
+        TextField(title, text: text)
+            .lineLimit(1)
+            .disableAutocorrection(true)
+            .textFieldStyle(PlainTextFieldStyle())
+            .padding(8)
+            .cornerRadius(10)
+    }
+}
+
+struct CustomSecureField: View {
+    var title: String
+    var text: Binding<String>
+
+    var body: some View {
+        SecureField(title, text: text)
+            .lineLimit(1)
+            .disableAutocorrection(true)
+            .textFieldStyle(PlainTextFieldStyle())
+            .padding(8)
+            .cornerRadius(10)
+    }
+}
+
 @main
 struct ChainXSApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate

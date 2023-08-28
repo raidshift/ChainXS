@@ -36,20 +36,6 @@ struct DerivationData: Equatable {
     var isPrivate = true
 }
 
-struct CustomTextField: View {
-    var title: String
-    var text: Binding<String>
-
-    var body: some View {
-        TextField(title, text: text)
-            .lineLimit(1)
-            .disableAutocorrection(true)
-            .textFieldStyle(PlainTextFieldStyle())
-            .padding(8)
-            .cornerRadius(10)
-    }
-}
-
 struct ContentView: View {
     @State var userProvidedKeys = UserProvidedKeys()
     @State var derivationData = DerivationData()
