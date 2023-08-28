@@ -30,7 +30,7 @@ struct SheetView: View {
         var text: Binding<String>
 
         var body: some View {
-            TextField(title, text: text)
+            SecureField(title, text: text)
                 .lineLimit(1)
                 .disableAutocorrection(true)
                 .textFieldStyle(PlainTextFieldStyle())
@@ -41,11 +41,16 @@ struct SheetView: View {
 
     var body: some View {
         VStack {
+            Spacer()
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("Encrypt & Save").font(.headline)
+                    Spacer()
+                }
+            }.padding(.horizontal)
             ScrollView {
                 HStack {
                     VStack(alignment: .leading) {
-                        Spacer()
-                        Text("Encrypt & Save").font(.headline)
                         Spacer()
                         Text("key = \"\(key)\"").textSelection(.enabled).foregroundColor(SUCCESS).font(MONO_FONT).lineLimit(1)
                         Text("passphrase = \"\(passphrase)\"").textSelection(.enabled).foregroundColor(SUCCESS).font(MONO_FONT).lineLimit(1)
@@ -56,11 +61,12 @@ struct SheetView: View {
                     Spacer()
                 }
             }
-            Divider().padding(.horizontal)
 
-            VStack {
-                CustomSecureField(title: "enter a password ...", text: $password)
-                CustomSecureField(title: "confirm password ...", text: $confirmPassword)
+            VStack(alignment: .leading) {
+                Text("Password").font(.headline)
+                CustomSecureField(title: "enter a password ...", text: $password).foregroundColor(SUCCESS)
+                Text("Password confirmation").font(.headline)
+                CustomSecureField(title: "confirm password ...", text: $confirmPassword).foregroundColor(SUCCESS)
             }.padding(.horizontal)
 
             HStack {
@@ -81,6 +87,6 @@ struct SheetView: View {
                 .font(.footnote)
             }.padding(.horizontal)
             Text("Enryption Param: AES-256-CBC RANDOM_IV(128) PKCS#5 PBKDF2 RANDOM_SALT(64) MD=SHA512 ITER=250000").font(.footnote).foregroundColor(.gray)
-        }.background(Color(red: 0.172, green: 0.315, blue: 0.378)).frame(minWidth: 600, minHeight: 300, maxHeight: 300)
+        }.background(Color(red: 0.172, green: 0.315, blue: 0.378)).frame(minWidth: 600, minHeight: 250, maxHeight: 400)
     }
 }
