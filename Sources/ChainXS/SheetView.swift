@@ -20,6 +20,8 @@ struct SheetView: View {
     @State var confirmPasswordColor: Color = FAILURE
     @State var filename: String = "~/key.enc"
     @State var isDisabledTextField = true
+    @State var document = TextDocument(text: "")
+    @State var exporting = false
 
     var body: some View {
         VStack {
@@ -73,14 +75,19 @@ struct SheetView: View {
 
             Divider()
             HStack {
-                Button(action: { passphrase = "abc" }) { Text("🔐 Encrypt & Save").font(.footnote).bold() }.disabled(confirmPasswordColor == FAILURE)
-                // let panel = NSOpenPanel()
-                // panel.allowsMultipleSelection = false
-                // panel.canChooseFiles = false
-                // panel.canChooseDirectories = true
-                // if panel.runModal() == .OK {
-                //     filename = panel.url?.lastPathComponent ?? "<none>"
-                // }
+                Button(action: { exporting = true }) { Text("🔐 Encrypt & Save").font(.footnote).bold() }.disabled(confirmPasswordColor == FAILURE)
+                    .fileExporter(
+                        isPresented: $exporting,
+                        document: document,
+                        contentType: .plainText
+                    ) { result in
+                        switch result {
+                        case let .success(file):
+                            print(file)
+                        case let .failure(error):
+                            print(error)
+                        }
+                    }
 
                 Spacer()
                 Button(action: { dismiss() }) { Text("✖️ Cancel").font(.footnote).bold() }

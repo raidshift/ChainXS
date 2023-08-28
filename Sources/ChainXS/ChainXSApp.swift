@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 let MIN_W: CGFloat = 800
 let MIN_H: CGFloat = 400
@@ -20,6 +21,30 @@ let MONO_FONT = Font
 let MONO_FONT_SM = Font
     .system(size: 10)
     .monospaced()
+
+struct TextDocument: FileDocument {
+    static var readableContentTypes: [UTType] {
+        [.plainText]
+    }
+
+    var text = ""
+
+    init(text: String) {
+        self.text = text
+    }
+
+    init(configuration: ReadConfiguration) throws {
+        if let data = configuration.file.regularFileContents {
+            text = String(decoding: data, as: UTF8.self)
+        } else {
+            text = ""
+        }
+    }
+
+    func fileWrapper(configuration _: WriteConfiguration) throws -> FileWrapper {
+        FileWrapper(regularFileWithContents: Data(text.utf8))
+    }
+}
 
 struct CustomTextField: View {
     var title: String
