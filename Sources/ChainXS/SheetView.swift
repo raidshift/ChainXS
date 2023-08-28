@@ -45,30 +45,34 @@ struct SheetView: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text("Encrypt & Save").font(.headline)
-                    Spacer()
                 }
             }.padding(.horizontal)
             ScrollView {
                 HStack {
-                    VStack(alignment: .leading) {
+                    VStack {
                         Spacer()
-                        Text("key = \"\(key)\"").textSelection(.enabled).foregroundColor(SUCCESS).font(MONO_FONT).lineLimit(1)
-                        Text("passphrase = \"\(passphrase)\"").textSelection(.enabled).foregroundColor(SUCCESS).font(MONO_FONT).lineLimit(1)
-                        Text("path = \"\(path)\"").textSelection(.enabled).foregroundColor(SUCCESS).font(MONO_FONT).lineLimit(1)
-
-                        Spacer()
-                    }.padding(.horizontal)
-                    Spacer()
-                }
+                        Text("KEY = \"\(key)\"\n\nPASSPHRASE = \"\(passphrase)\"\n\nPATH = \"\(path)\"")
+                            .textSelection(.enabled)
+                            .foregroundColor(SUCCESS)
+                            .font(MONO_FONT)
+                            .padding()
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(SUCCESS, lineWidth: 1)
+                            )
+                        // Text("passphrase = \"\(passphrase)\"").textSelection(.enabled).foregroundColor(SUCCESS).font(MONO_FONT)
+                        // Text("path = \"\(path)\"").textSelection(.enabled).foregroundColor(SUCCESS).font(MONO_FONT)
+                    }
+                }.padding(.horizontal)
             }
 
             VStack(alignment: .leading) {
                 Text("Password").font(.headline)
-                CustomSecureField(title: "enter a password ...", text: $password).foregroundColor(SUCCESS)
-                Text("Password confirmation").font(.headline)
+                CustomSecureField(title: "enter password ...", text: $password).foregroundColor(SUCCESS)
+                Text("Password Confirmation").font(.headline)
                 CustomSecureField(title: "confirm password ...", text: $confirmPassword).foregroundColor(SUCCESS)
             }.padding(.horizontal)
-
+            Divider()
             HStack {
                 Button("Cancel") {
                     dismiss()
@@ -86,7 +90,8 @@ struct SheetView: View {
                 }
                 .font(.footnote)
             }.padding(.horizontal)
-            Text("Enryption Param: AES-256-CBC RANDOM_IV(128) PKCS#5 PBKDF2 RANDOM_SALT(64) MD=SHA512 ITER=250000").font(.footnote).foregroundColor(.gray)
-        }.background(Color(red: 0.172, green: 0.315, blue: 0.378)).frame(minWidth: 600, minHeight: 250, maxHeight: 400)
+            Spacer()
+            // Text("AES-256-CBC RAND_IV(128) PKCS#5 PBKDF2 SECRAND_SALT(64) MD=SHA512 ITER=250000").font(.footnote).foregroundColor(.gray)
+        }.background(Color(red: 0.172, green: 0.315, blue: 0.378)).frame(minWidth: 600, maxWidth: 600, minHeight: 380, maxHeight: 380)
     }
 }

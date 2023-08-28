@@ -73,8 +73,8 @@ struct ContentView: View {
                     Divider()
                     Button(action: { userProvidedKeys.key = ""; userProvidedKeys.passphrase = "" }) { Text("🗑️ Reset").font(.footnote).bold() }
                     Divider()
-                    Button(action: { showingSheet.toggle() }) { Text("🔐 Save").font(.footnote).bold() }.disabled(derivationpathColor == FAILURE || mnemonicColor == FAILURE).sheet(isPresented: $showingSheet) { SheetView(key: userProvidedKeys.key, passphrase: userProvidedKeys.passphrase, path: derivationData.path) }
-                    Button(action: { showingSheet.toggle() }) { Text("🔓 Load").font(.footnote).bold() }.sheet(isPresented: $showingSheet) { SheetView(key: userProvidedKeys.key, passphrase: userProvidedKeys.passphrase, path: derivationData.path) }
+                    Button(action: { showingSheet.toggle() }) { Text("🔐 Encrypt & Save").font(.footnote).bold() }.disabled(derivationpathColor == FAILURE || mnemonicColor == FAILURE).sheet(isPresented: $showingSheet) { SheetView(key: userProvidedKeys.key, passphrase: userProvidedKeys.passphrase, path: derivationData.path) }
+                    Button(action: { showingSheet.toggle() }) { Text("🔓 Load & Decrypt").font(.footnote).bold() }.sheet(isPresented: $showingSheet) { SheetView(key: userProvidedKeys.key, passphrase: userProvidedKeys.passphrase, path: derivationData.path) }
                 }
                 CustomTextField(title: "enter mnemonic or extended key ...", text: $userProvidedKeys.key)
                     .foregroundColor(mnemonicColor)
