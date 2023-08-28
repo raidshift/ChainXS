@@ -7,6 +7,16 @@
 
 import SwiftUI
 
+let MIN_W: CGFloat = 800
+let MIN_H: CGFloat = 400
+
+let SUCCESS = Color.green
+let FAILURE = Color.red
+
+let MONO_FONT = Font
+    .system(size: 12)
+    .monospaced()
+
 @main
 struct ChainXSApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate

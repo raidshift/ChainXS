@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-let MIN_W: CGFloat = 800
-let MIN_H: CGFloat = 400
-
-let SUCCESS = Color.green
-let FAILURE = Color.red
 
 extension NSTextField {
     override open var focusRingType: NSFocusRingType {
@@ -55,16 +50,6 @@ struct CustomTextField: View {
     }
 }
 
-struct BlueButton: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .padding()
-            .background(.red)
-            .foregroundColor(.white)
-            .clipShape(Capsule())
-    }
-}
-
 struct ContentView: View {
     @State var userProvidedKeys = UserProvidedKeys()
     @State var derivationData = DerivationData()
@@ -88,8 +73,8 @@ struct ContentView: View {
                     Divider()
                     Button(action: { userProvidedKeys.key = ""; userProvidedKeys.passphrase = "" }) { Text("🗑️ Reset").font(.footnote).bold() }
                     Divider()
-                    Button(action: { showingSheet.toggle() }) { Text("🔐 Save").font(.footnote).bold() }.disabled(derivationpathColor == FAILURE || mnemonicColor == FAILURE).sheet(isPresented: $showingSheet) { SheetView() }
-                    Button(action: { showingSheet.toggle() }) { Text("🔓 Load").font(.footnote).bold() }.sheet(isPresented: $showingSheet) { SheetView() }
+                    Button(action: { showingSheet.toggle() }) { Text("🔐 Save").font(.footnote).bold() }.disabled(derivationpathColor == FAILURE || mnemonicColor == FAILURE).sheet(isPresented: $showingSheet) { SheetView(key: userProvidedKeys.key, passphrase: userProvidedKeys.passphrase, path: derivationData.path) }
+                    Button(action: { showingSheet.toggle() }) { Text("🔓 Load").font(.footnote).bold() }.sheet(isPresented: $showingSheet) { SheetView(key: userProvidedKeys.key, passphrase: userProvidedKeys.passphrase, path: derivationData.path) }
                 }
                 CustomTextField(title: "enter mnemonic or extended key ...", text: $userProvidedKeys.key)
                     .foregroundColor(mnemonicColor)
@@ -159,11 +144,8 @@ struct ContentView: View {
                     Stepper("\(derivationData.selectedCount)", value: $derivationData.selectedCount, in: 1 ... 50).foregroundColor(derivationpathColor)
                 }
                 VStack(alignment: .leading) {
-                    let monoFont = Font
-                        .system(size: 12)
-                        .monospaced()
                     ForEach(results, id: \.self) {
-                        Text($0).textSelection(.enabled).foregroundColor(SUCCESS).font(monoFont).lineLimit(1)
+                        Text($0).textSelection(.enabled).foregroundColor(SUCCESS).font(MONO_FONT).lineLimit(1)
                     }
                 }
                 .padding(.top, 8)
