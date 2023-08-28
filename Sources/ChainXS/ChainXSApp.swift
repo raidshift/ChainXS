@@ -36,7 +36,7 @@ struct ChainXSApp: App {
                     NSWindow.allowsAutomaticWindowTabbing = false
                 }
                 .preferredColorScheme(.dark)
-                .background(Color.init(red: 0.172, green: 0.315, blue: 0.378))
+                .background(Color(red: 0.172, green: 0.315, blue: 0.378))
         }
         .commands {
             CommandGroup(replacing: .systemServices, addition: {})

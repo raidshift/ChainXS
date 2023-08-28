@@ -7,37 +7,31 @@
 
 import SwiftUI
 
+struct CustomSecureField: View {
+    var title: String
+    var text: Binding<String>
+
+    var body: some View {
+        SecureField(title, text: text)
+            .lineLimit(1)
+            .disableAutocorrection(true)
+            .textFieldStyle(PlainTextFieldStyle())
+            .padding(8)
+            .cornerRadius(10)
+    }
+}
+
 struct SheetView: View {
     @Environment(\.dismiss) var dismiss
 
-    @State var key: String
-    @State var passphrase: String
-    @State var path: String
+    @Binding var key: String
+    @Binding var passphrase: String
+    @Binding var path: String
+    @Binding var selectedLevel: Int
     @State var password: String = ""
     @State var confirmPassword: String = ""
-
     @State var filename: String = ""
 
-    init(key: String, passphrase: String, path: String) {
-        // self.key = key
-        _key = State(initialValue: key)
-        _passphrase = State(initialValue: passphrase)
-        _path = State(initialValue: path)
-    }
-
-    struct CustomSecureField: View {
-        var title: String
-        var text: Binding<String>
-
-        var body: some View {
-            SecureField(title, text: text)
-                .lineLimit(1)
-                .disableAutocorrection(true)
-                .textFieldStyle(PlainTextFieldStyle())
-                .padding(8)
-                .cornerRadius(10)
-        }
-    }
 
     var body: some View {
         VStack {
@@ -51,7 +45,7 @@ struct SheetView: View {
                 HStack {
                     VStack {
                         Spacer()
-                        Text("KEY = \"\(key)\"\n\nPASSPHRASE = \"\(passphrase)\"\n\nPATH = \"\(path)\"")
+                        Text("KEY = \"\(key)\"\n\nPASSPHRASE = \"\(passphrase)\"\n\nPATH = \"\(path)\"\n\nLEVEL = \"\(selectedLevel)\"")
                             .textSelection(.enabled)
                             .foregroundColor(SUCCESS)
                             .font(MONO_FONT)
@@ -60,8 +54,6 @@ struct SheetView: View {
                                 RoundedRectangle(cornerRadius: 5)
                                     .stroke(SUCCESS, lineWidth: 1)
                             )
-                        // Text("passphrase = \"\(passphrase)\"").textSelection(.enabled).foregroundColor(SUCCESS).font(MONO_FONT)
-                        // Text("path = \"\(path)\"").textSelection(.enabled).foregroundColor(SUCCESS).font(MONO_FONT)
                     }
                 }.padding(.horizontal)
             }
@@ -80,13 +72,14 @@ struct SheetView: View {
                 .font(.footnote)
                 Spacer()
                 Button("Encrypt & Save") {
-                    let panel = NSOpenPanel()
-                    panel.allowsMultipleSelection = false
-                    panel.canChooseFiles = false
-                    panel.canChooseDirectories = true
-                    if panel.runModal() == .OK {
-                        filename = panel.url?.lastPathComponent ?? "<none>"
-                    }
+                    // let panel = NSOpenPanel()
+                    // panel.allowsMultipleSelection = false
+                    // panel.canChooseFiles = false
+                    // panel.canChooseDirectories = true
+                    // if panel.runModal() == .OK {
+                    //     filename = panel.url?.lastPathComponent ?? "<none>"
+                    // }
+                    passphrase = "abc";
                 }
                 .font(.footnote)
             }.padding(.horizontal)
