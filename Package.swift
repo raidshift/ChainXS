@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "ChainXS",
     platforms: [
-          .macOS(.v13)
+          .macOS(.v12)
       ],
     dependencies: [
         .package(url: "https://github.com/Boilertalk/secp256k1.swift.git", from: "0.1.7"),
