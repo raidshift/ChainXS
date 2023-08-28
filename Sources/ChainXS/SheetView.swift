@@ -65,10 +65,10 @@ struct SheetView: View {
                 }
             }
             .onChange(of: password) { _ in
-                confirmPasswordColor = (password == confirmPassword) ? SUCCESS : FAILURE
+                confirmPasswordColor = (password == confirmPassword && !password.isEmpty) ? SUCCESS : FAILURE
             }
             .onChange(of: confirmPassword) { _ in
-                confirmPasswordColor = (password == confirmPassword) ? SUCCESS : FAILURE
+                confirmPasswordColor = (password == confirmPassword && !password.isEmpty) ? SUCCESS : FAILURE
             }
 
             Divider()
