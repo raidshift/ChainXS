@@ -15,7 +15,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>8</string>
+	<string>10</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>2022 by raidshift</string>
 </dict>

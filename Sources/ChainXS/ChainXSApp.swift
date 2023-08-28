@@ -17,6 +17,10 @@ let MONO_FONT = Font
     .system(size: 12)
     .monospaced()
 
+let MONO_FONT_SM = Font
+    .system(size: 10)
+    .monospaced()
+
 struct CustomTextField: View {
     var title: String
     var text: Binding<String>
@@ -27,7 +31,6 @@ struct CustomTextField: View {
             .disableAutocorrection(true)
             .textFieldStyle(PlainTextFieldStyle())
             .padding(8)
-            .cornerRadius(10)
     }
 }
 
@@ -41,7 +44,6 @@ struct CustomSecureField: View {
             .disableAutocorrection(true)
             .textFieldStyle(PlainTextFieldStyle())
             .padding(8)
-            .cornerRadius(10)
     }
 }
 
