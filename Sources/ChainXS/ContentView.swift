@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 extension NSTextField {
     override open var focusRingType: NSFocusRingType {
         get { .none }
@@ -46,21 +45,46 @@ struct ContentView: View {
     @State var isDisabledTextField = true
     @State var dividerSets = false
     @State private var showingSheet = false
+    @State var password: String = ""
+    @State var document = EncDocument(text: "")
+    @State var exporting = false
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
                 HStack {
-                    Text("Mnemonic or Extended Key").font(.headline)
-                    Spacer()
-                    Button(action: { userProvidedKeys.key = try! createMnemonic(16) }) { Text("🎲 12 Words").font(.footnote).bold() }
-                    Button(action: { userProvidedKeys.key = try! createMnemonic(24) }) { Text("🎲 18 Words").font(.footnote).bold() }
-                    Button(action: { userProvidedKeys.key = try! createMnemonic(32) }) { Text("🎲 24 Words").font(.footnote).bold() }
+                    HStack {
+                        Text("Mnemonic or Extended Key").font(.headline)
+                        Spacer()
+                        Button(action: { userProvidedKeys.key = try! createMnemonic(16) }) { Text("🎲 12").font(.footnote).bold() }
+                        Button(action: { userProvidedKeys.key = try! createMnemonic(24) }) { Text("🎲 18").font(.footnote).bold() }
+                        Button(action: { userProvidedKeys.key = try! createMnemonic(32) }) { Text("🎲 24").font(.footnote).bold() }
+                        Button(action: { userProvidedKeys.key = ""; userProvidedKeys.passphrase = "" }) { Text("✖️").font(.footnote).bold() }
+                    }
                     Divider()
-                    Button(action: { userProvidedKeys.key = ""; userProvidedKeys.passphrase = "" }) { Text("🗑️ Reset").font(.footnote).bold() }
-                    Divider()
-                    Button(action: { showingSheet.toggle() }) { Text("🔐 Encrypt & Save").font(.footnote).bold() }.disabled(derivationpathColor == FAILURE || mnemonicColor == FAILURE).sheet(isPresented: $showingSheet) { SheetView(key: $userProvidedKeys.key, passphrase: $userProvidedKeys.passphrase, path: $derivationData.path, selectedLevel: $derivationData.selectedLevel) }
-                    Button(action: { showingSheet.toggle() }) { Text("🔓 Load & Decrypt").font(.footnote).bold() }.sheet(isPresented: $showingSheet) { SheetView(key: $userProvidedKeys.key, passphrase: $userProvidedKeys.passphrase, path: $derivationData.path, selectedLevel: $derivationData.selectedLevel) }
+                    HStack {
+                        CustomSecureField(title: "enter password ...", text: $password).foregroundColor(SUCCESS).disabled(isDisabledTextField).frame(width: 120)
+                        Button(action: { 
+                            document = EncDocument(text: "KEY = \"\(userProvidedKeys.key)\"\n\nPASSPHRASE = \"\(userProvidedKeys.passphrase)\"\n\nPATH = \"\(derivationData.path)\"\n\nLEVEL = \"\(derivationData.selectedLevel)\"\n")
+                            exporting = true 
+                        }) { Text("🔐").font(.footnote).bold() }.disabled(password.isEmpty || derivationpathColor == FAILURE || mnemonicColor == FAILURE)
+                            .fileExporter(
+                                isPresented: $exporting,
+                                document: document,
+                                contentType: .data,
+                                defaultFilename: "key.enc"
+                            ) { result in
+                                switch result {
+                                case let .success(file):
+                                    print(file)
+                                case let .failure(error):
+                                    print(error)
+                                }
+                            }
+                        // .sheet(isPresented: $showingSheet) { SheetView(key: $userProvidedKeys.key, passphrase: $userProvidedKeys.passphrase, path: $derivationData.path, selectedLevel: $derivationData.selectedLevel) }
+                        Button(action: { }) { Text("🔓").font(.footnote).bold() }.disabled(password.isEmpty)
+                        // .sheet(isPresented: $showingSheet) { SheetView(key: $userProvidedKeys.key, passphrase: $userProvidedKeys.passphrase, path: $derivationData.path, selectedLevel: $derivationData.selectedLevel) }
+                    }
                 }
                 CustomTextField(title: "enter mnemonic or extended key ...", text: $userProvidedKeys.key)
                     .foregroundColor(mnemonicColor)

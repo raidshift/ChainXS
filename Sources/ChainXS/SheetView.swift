@@ -20,7 +20,7 @@ struct SheetView: View {
     @State var confirmPasswordColor: Color = FAILURE
     @State var filename: String = "~/key.enc"
     @State var isDisabledTextField = true
-    @State var document = TextDocument(text: "")
+    @State var document = EncDocument(text: "")
     @State var exporting = false
 
     var body: some View {

@@ -22,9 +22,9 @@ let MONO_FONT_SM = Font
     .system(size: 10)
     .monospaced()
 
-struct TextDocument: FileDocument {
+struct EncDocument: FileDocument {
     static var readableContentTypes: [UTType] {
-        [.plainText]
+        [.data]
     }
 
     var text = ""
@@ -68,7 +68,7 @@ struct CustomSecureField: View {
             .lineLimit(1)
             .disableAutocorrection(true)
             .textFieldStyle(PlainTextFieldStyle())
-            .padding(8)
+            .textContentType(.password)
     }
 }
 
