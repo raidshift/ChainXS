@@ -48,6 +48,7 @@ struct ContentView: View {
     @State var password: String = ""
     @State var document = EncDocument(text: "")
     @State var exporting = false
+    @State var importing: Bool = false
 
     var body: some View {
         ScrollView {
@@ -64,14 +65,15 @@ struct ContentView: View {
                     Divider()
                     HStack {
                         CustomSecureField(title: "enter password ...", text: $password).foregroundColor(SUCCESS).disabled(isDisabledTextField).frame(width: 120)
-                        Button(action: { 
+                        Button(action: {
                             document = EncDocument(text: "KEY = \"\(userProvidedKeys.key)\"\n\nPASSPHRASE = \"\(userProvidedKeys.passphrase)\"\n\nPATH = \"\(derivationData.path)\"\n\nLEVEL = \"\(derivationData.selectedLevel)\"\n")
-                            exporting = true 
-                        }) { Text("🔐").font(.footnote).bold() }.disabled(password.isEmpty || derivationpathColor == FAILURE || mnemonicColor == FAILURE)
+                            exporting = true
+                        }) { Text("🔐").font(.footnote).bold() }
+                            .disabled(password.isEmpty || derivationpathColor == FAILURE || mnemonicColor == FAILURE)
                             .fileExporter(
                                 isPresented: $exporting,
                                 document: document,
-                                contentType: .data,
+                                contentType: .plainText,
                                 defaultFilename: "key.enc"
                             ) { result in
                                 switch result {
@@ -82,7 +84,21 @@ struct ContentView: View {
                                 }
                             }
                         // .sheet(isPresented: $showingSheet) { SheetView(key: $userProvidedKeys.key, passphrase: $userProvidedKeys.passphrase, path: $derivationData.path, selectedLevel: $derivationData.selectedLevel) }
-                        Button(action: { }) { Text("🔓").font(.footnote).bold() }.disabled(password.isEmpty)
+                        Button(action: {
+                            importing = true
+                        }) { Text("🔓").font(.footnote).bold() }
+                            .disabled(password.isEmpty)
+                            .fileImporter(
+                                isPresented: $importing,
+                                allowedContentTypes: [.plainText]
+                            ) { result in
+                                switch result {
+                                case let .success(file):
+                                    print(file.absoluteString)
+                                case let .failure(error):
+                                    print(error.localizedDescription)
+                                }
+                            }
                         // .sheet(isPresented: $showingSheet) { SheetView(key: $userProvidedKeys.key, passphrase: $userProvidedKeys.passphrase, path: $derivationData.path, selectedLevel: $derivationData.selectedLevel) }
                     }
                 }
