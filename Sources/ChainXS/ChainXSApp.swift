@@ -22,6 +22,7 @@ let MONO_FONT_SM = Font
     .system(size: 10)
     .monospaced()
 
+let DEFAULT_FILENAME = "key"
 let MAX_FILE_SIZE = 10240
 
 struct EncryptStruct: Codable {
@@ -41,7 +42,7 @@ extension FileError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .format:
-            return NSLocalizedString("Invalid file format", comment: "Invalid file format")
+            return NSLocalizedString("Invalid data format", comment: "Invalid data format")
         case .readSize:
             return NSLocalizedString("Unable to read files size", comment: "Unable to read file size")
         case .size:

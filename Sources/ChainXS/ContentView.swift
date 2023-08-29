@@ -68,24 +68,25 @@ struct ContentView: View {
                     HStack {
                         CustomSecureField(title: "enter password ...", text: $password).foregroundColor(SUCCESS).disabled(isDisabledTextField).frame(width: 120)
                         Button(action: {
-                            // let tmp = "KEY = \"\(userProvidedKeys.key)\"\n\nPASSPHRASE = \"\(userProvidedKeys.passphrase)\"\n\nPATH = \"\(derivationData.path)\"\n\nLEVEL = \"\(derivationData.selectedLevel)\"\n"
-
                             let encStruct = EncryptStruct(key: userProvidedKeys.key, passphrase: userProvidedKeys.passphrase, path: derivationData.path, level: derivationData.selectedLevel)
 
                             let encoder = JSONEncoder()
                             encoder.outputFormatting = .prettyPrinted
-                            let encoded = String(data: try encoder.encode(encStruct), encoding: .utf8)!
-                            print(encoded);
-
-                            document = EncDocument(text: encoded.base64EncodedString())
-                            exporting = true
+                            do {
+                                let encoded = try String(data: encoder.encode(encStruct), encoding: .utf8)!
+                                document = EncDocument(text: encoded.data(using: .utf8)!.base64EncodedString())
+                                exporting = true
+                            } catch {
+                                alertMessage = error.localizedDescription
+                                alert = true
+                            }
                         }) { Text("🔐").font(.footnote).bold() }
                             .disabled(password.isEmpty || derivationpathColor == FAILURE || mnemonicColor == FAILURE)
                             .fileExporter(
                                 isPresented: $exporting,
                                 document: document,
                                 contentType: .data,
-                                defaultFilename: "key.enc"
+                                defaultFilename: DEFAULT_FILENAME
                             ) { result in
                                 switch result {
                                 case let .success(file):
@@ -114,10 +115,16 @@ struct ContentView: View {
 
                                         let content = try Data(contentsOf: fileURL)
                                         let decodedData = try Data(base64Encoded: String(decoding: content, as: UTF8.self)) ?? { throw FileError.format }()
-                                        let decodedString = try String(data: decodedData, encoding: .utf8) ?? { throw FileError.format }()
+                                        // let decodedString = try String(data: decodedData, encoding: .utf8) ?? { throw FileError.format }()
 
-                                        alertMessage = decodedString
-                                        alert = true
+                                        let decoder = JSONDecoder()
+                                        do {
+                                            let encStruct = try decoder.decode(EncryptStruct.self, from: decodedData)
+                                            alertMessage = encStruct.path!
+                                            alert = true
+                                        } catch {
+                                            throw FileError.format
+                                        }
 
                                     } catch {
                                         alertMessage = error.localizedDescription
