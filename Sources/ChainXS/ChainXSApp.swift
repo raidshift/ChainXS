@@ -22,6 +22,27 @@ let MONO_FONT_SM = Font
     .system(size: 10)
     .monospaced()
 
+let MAX_FILE_SIZE = 10240
+
+public enum FileError: Error {
+    case readSize
+    case format
+    case size
+}
+
+extension FileError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .format:
+            return NSLocalizedString("Invalid file format", comment: "Invalid file format")
+        case .readSize:
+            return NSLocalizedString("Unable to read files size", comment: "Unable to read file size")
+        case .size:
+            return NSLocalizedString("File size exceeds limit of \(MAX_FILE_SIZE / 1024) KiB", comment: "File size exceeds limit of \(MAX_FILE_SIZE / 1024) KiB")
+        }
+    }
+}
+
 struct EncDocument: FileDocument {
     static var readableContentTypes: [UTType] {
         [.data]

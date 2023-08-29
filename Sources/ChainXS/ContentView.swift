@@ -44,11 +44,13 @@ struct ContentView: View {
     @State var results: [String] = []
     @State var isDisabledTextField = true
     @State var dividerSets = false
-    @State private var showingSheet = false
+    @State var showingSheet = false
     @State var password: String = ""
     @State var document = EncDocument(text: "")
     @State var exporting = false
     @State var importing: Bool = false
+    @State var alert = false
+    @State var alertMessage = ""
 
     var body: some View {
         ScrollView {
@@ -66,40 +68,65 @@ struct ContentView: View {
                     HStack {
                         CustomSecureField(title: "enter password ...", text: $password).foregroundColor(SUCCESS).disabled(isDisabledTextField).frame(width: 120)
                         Button(action: {
-                            document = EncDocument(text: "KEY = \"\(userProvidedKeys.key)\"\n\nPASSPHRASE = \"\(userProvidedKeys.passphrase)\"\n\nPATH = \"\(derivationData.path)\"\n\nLEVEL = \"\(derivationData.selectedLevel)\"\n")
+                            let tmp = "KEY = \"\(userProvidedKeys.key)\"\n\nPASSPHRASE = \"\(userProvidedKeys.passphrase)\"\n\nPATH = \"\(derivationData.path)\"\n\nLEVEL = \"\(derivationData.selectedLevel)\"\n"
+                            document = EncDocument(text: (tmp.data(using: .utf8))!.base64EncodedString())
                             exporting = true
                         }) { Text("🔐").font(.footnote).bold() }
                             .disabled(password.isEmpty || derivationpathColor == FAILURE || mnemonicColor == FAILURE)
                             .fileExporter(
                                 isPresented: $exporting,
                                 document: document,
-                                contentType: .plainText,
+                                contentType: .data,
                                 defaultFilename: "key.enc"
                             ) { result in
                                 switch result {
                                 case let .success(file):
                                     print(file)
                                 case let .failure(error):
-                                    print(error)
+                                    alertMessage = error.localizedDescription
+                                    alert = true
                                 }
                             }
-                        // .sheet(isPresented: $showingSheet) { SheetView(key: $userProvidedKeys.key, passphrase: $userProvidedKeys.passphrase, path: $derivationData.path, selectedLevel: $derivationData.selectedLevel) }
                         Button(action: {
                             importing = true
                         }) { Text("🔓").font(.footnote).bold() }
                             .disabled(password.isEmpty)
                             .fileImporter(
                                 isPresented: $importing,
-                                allowedContentTypes: [.plainText]
+                                allowedContentTypes: [.data]
                             ) { result in
                                 switch result {
-                                case let .success(file):
-                                    print(file.absoluteString)
+                                case let .success(fileURL):
+                                    do {
+                                        let didStartAccessing = fileURL.startAccessingSecurityScopedResource()
+                                        defer {
+                                            if didStartAccessing {
+                                                fileURL.stopAccessingSecurityScopedResource()
+                                            }
+                                        }
+                                        let resourceValues = try fileURL.resourceValues(forKeys: [.fileSizeKey])
+
+                                        if try resourceValues.fileSize ?? { throw FileError.readSize }() > MAX_FILE_SIZE { throw FileError.size }
+
+                                        let content = try Data(contentsOf: fileURL)
+                                        let decodedData = try Data(base64Encoded: String(decoding: content, as: UTF8.self)) ?? { throw FileError.format }()
+                                        let decodedString = try String(data: decodedData, encoding: .utf8) ?? { throw FileError.format }()
+
+                                        alertMessage = decodedString
+                                        alert = true
+
+                                    } catch {
+                                        alertMessage = error.localizedDescription
+                                        alert = true
+                                    }
                                 case let .failure(error):
-                                    print(error.localizedDescription)
+                                    alertMessage = error.localizedDescription
+                                    alert = true
                                 }
                             }
-                        // .sheet(isPresented: $showingSheet) { SheetView(key: $userProvidedKeys.key, passphrase: $userProvidedKeys.passphrase, path: $derivationData.path, selectedLevel: $derivationData.selectedLevel) }
+                            .alert(alertMessage, isPresented: $alert) {
+                                Button("OK", role: .cancel) {}
+                            }
                     }
                 }
                 CustomTextField(title: "enter mnemonic or extended key ...", text: $userProvidedKeys.key)
