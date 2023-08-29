@@ -24,6 +24,13 @@ let MONO_FONT_SM = Font
 
 let MAX_FILE_SIZE = 10240
 
+struct EncryptStruct: Codable {
+    var key: String
+    var passphrase: String?
+    var path: String?
+    var level: Int
+}
+
 public enum FileError: Error {
     case readSize
     case format

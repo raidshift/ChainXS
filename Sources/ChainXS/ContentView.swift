@@ -68,8 +68,16 @@ struct ContentView: View {
                     HStack {
                         CustomSecureField(title: "enter password ...", text: $password).foregroundColor(SUCCESS).disabled(isDisabledTextField).frame(width: 120)
                         Button(action: {
-                            let tmp = "KEY = \"\(userProvidedKeys.key)\"\n\nPASSPHRASE = \"\(userProvidedKeys.passphrase)\"\n\nPATH = \"\(derivationData.path)\"\n\nLEVEL = \"\(derivationData.selectedLevel)\"\n"
-                            document = EncDocument(text: (tmp.data(using: .utf8))!.base64EncodedString())
+                            // let tmp = "KEY = \"\(userProvidedKeys.key)\"\n\nPASSPHRASE = \"\(userProvidedKeys.passphrase)\"\n\nPATH = \"\(derivationData.path)\"\n\nLEVEL = \"\(derivationData.selectedLevel)\"\n"
+
+                            let encStruct = EncryptStruct(key: userProvidedKeys.key, passphrase: userProvidedKeys.passphrase, path: derivationData.path, level: derivationData.selectedLevel)
+
+                            let encoder = JSONEncoder()
+                            encoder.outputFormatting = .prettyPrinted
+                            let encoded = String(data: try encoder.encode(encStruct), encoding: .utf8)!
+                            print(encoded);
+
+                            document = EncDocument(text: encoded.base64EncodedString())
                             exporting = true
                         }) { Text("🔐").font(.footnote).bold() }
                             .disabled(password.isEmpty || derivationpathColor == FAILURE || mnemonicColor == FAILURE)
@@ -99,11 +107,7 @@ struct ContentView: View {
                                 case let .success(fileURL):
                                     do {
                                         let didStartAccessing = fileURL.startAccessingSecurityScopedResource()
-                                        defer {
-                                            if didStartAccessing {
-                                                fileURL.stopAccessingSecurityScopedResource()
-                                            }
-                                        }
+                                        defer { if didStartAccessing { fileURL.stopAccessingSecurityScopedResource() }}
                                         let resourceValues = try fileURL.resourceValues(forKeys: [.fileSizeKey])
 
                                         if try resourceValues.fileSize ?? { throw FileError.readSize }() > MAX_FILE_SIZE { throw FileError.size }
