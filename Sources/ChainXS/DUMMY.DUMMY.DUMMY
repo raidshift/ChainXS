@@ -77,7 +77,7 @@ extension String {
 
     func split(len: Int) -> String {
         if count == 0 { return "" }
-        if len < 1 { return str }
+        if len < 1 { return self }
         var splitStr = ""
 
         var im = 0
@@ -101,58 +101,7 @@ func bytes2Hex(bytes: [UInt8]) -> String {
     return string
 }
 
-// openssl kdf -keylen 32 -kdfopt digest:SHA512 -kdfopt pass:pass -kdfopt salt:11111111 -kdfopt iter:250000 PBKDF2
 
-print("\n*** PBKDF2 ***")
-
-var key: [UInt8] = []
-
-do {
-    let password = "pass"
-    let saltHex = "1c7c0cfa0896c787"
-    key = try pbkdf2(password: password, salt: saltHex.uInt8FromHex!)
-
-    print("salt  (hex) = \(bytes2Hex(bytes: saltHex.uInt8FromHex!))")
-    print("salt  (str) = \(String(decoding: saltHex.uInt8FromHex!, as: UTF8.self))")
-    print("key   (hex) = \(bytes2Hex(bytes: key))")
-
-} catch {
-    print(error.localizedDescription)
-}
-
-// ENCDEC
-
-print("\n*** ENCDEC ***")
-
-do {
-    let ivHex = "31313131313131313131313131313131"
-    let plaintext = "secret"
-
-    let enc = try encrypt(key: key, iv: ivHex.uInt8FromHex!, plaintext: Array(plaintext.utf8))
-    print("plain (str) = \(plaintext)")
-    print("iv    (hex) = \(ivHex)")
-    print("key   (hex) = \(bytes2Hex(bytes: key))")
-    print("enc   (hex) = \(bytes2Hex(bytes: enc))")
-    print("enc   (b64) = \(Data(enc).base64EncodedString())")
-
-    let dec = try decrypt(key: key, iv: ivHex.uInt8FromHex!, cyphertext: enc)
-    print("dec   (hex) = \(bytes2Hex(bytes: dec))")
-    print("dec   (str) = \(String(decoding: dec, as: UTF8.self))")
-
-} catch {
-    print(error)
-}
-
-// echo "1" | openssl enc -aes-256-cbc -pbkdf2 -md sha512 -iter 250000 -a -A -S "201bd811b4d8af1a" -iv "378385397a15a925b0c394ac5a10187a" -k "pass"
-
-// echo "123" | openssl enc -aes-256-cbc -a -A -S "201bd811b4d8af1a" -iv "378385397a15a925b0c394ac5a10187a" -K "033e0d92c447e24629077fc8bc26334d5b8f34994fe4956fffd22bd42719e412"
-
-let str = """
-############  salt:iv:aes_256_cbc_pbkdf2_sha512_250000_base64(bin) #############
-
-1c7c0cfa0896c787:c3d0b299be64e37fe8137f6d1aa8d8f4:CcVRbplCd29Aj0Tm/PEWwoNJpsdRi7
-yrPrTpDeB6dueq7cdszelqLN1kyURn8F6r
-"""
 
 func bundleCypherParams(salt: [UInt8], iv: [UInt8], cyphertext: [UInt8]) throws -> String {
     return "\(COMMENT)\n\n\(bytes2Hex(bytes: salt)):\(bytes2Hex(bytes: iv)):\(Data(cyphertext).base64EncodedString())"
@@ -174,24 +123,102 @@ func unbundleCypherParams(bundle: String) throws -> (salt: [UInt8], iv: [UInt8],
     return try (params[0].uInt8FromHex ?? { throw ENCDEC_ERR.FORMAT_SALT }(), params[1].uInt8FromHex ?? { throw ENCDEC_ERR.FORMAT_IV }(), [UInt8]((Data(base64Encoded: params[2]) ?? { throw ENCDEC_ERR.FORMAT_CYPHERTEXT }())))
 }
 
-do {
-    let extracted = try unbundleCypherParams(bundle: str)
-    print("************************")
-    // print(str)
-    print("************************")
-    // print(extracted)
-    print("************************")
 
-    let dec = try decrypt(key: key, iv: extracted.iv, cyphertext: extracted.cyphertext)
+let password = "1234"
+let message = "Hello World !!! Hello World ! Hello World !!"
 
-    print("dec   (hex) = \(bytes2Hex(bytes: dec))")
-    print("dec   (str) = \(String(decoding: dec, as: UTF8.self))")
-} catch {
-    print(error)
-}
+var salt = [UInt8](repeating: 0, count: SALT_LEN)
+_ = SecRandomCopyBytes(kSecRandomDefault, SALT_LEN, &salt)
 
-var str2 = "1245634zherh ret herth erth etrhtrhhrthhthtrerethrte"
+var iv = [UInt8](repeating: 0, count: IV_LEN)
+_ = SecRandomCopyBytes(kSecRandomDefault, IV_LEN, &iv)
 
-print("************************")
+var key = try pbkdf2(password: password, salt: salt)
 
-print(str2.split(len: 3))
+let cyphertext = try encrypt(key: key, iv: iv, plaintext: Array(message.utf8))
+
+let bundledCypher = try bundleCypherParams(salt: salt, iv: iv, cyphertext: cyphertext)
+
+print(bundledCypher)
+
+let (salt2,iv2,cyphertext2) = try unbundleCypherParams(bundle: bundledCypher)
+var key2 = try pbkdf2(password: password, salt: salt2)
+
+let plaintext = try decrypt(key: key2, iv: iv2, cyphertext: cyphertext2)
+print("plaintext = \(String(decoding: plaintext, as: UTF8.self))")
+
+
+// openssl kdf -keylen 32 -kdfopt digest:SHA512 -kdfopt pass:pass -kdfopt salt:11111111 -kdfopt iter:250000 PBKDF2
+
+// print("\n*** PBKDF2 ***")
+
+// var key: [UInt8] = []
+
+// do {
+//     let password = "pass"
+//     let saltHex = "1c7c0cfa0896c787"
+//     key = try pbkdf2(password: password, salt: saltHex.uInt8FromHex!)
+
+//     print("salt  (hex) = \(bytes2Hex(bytes: saltHex.uInt8FromHex!))")
+//     print("salt  (str) = \(String(decoding: saltHex.uInt8FromHex!, as: UTF8.self))")
+//     print("key   (hex) = \(bytes2Hex(bytes: key))")
+
+// } catch {
+//     print(error.localizedDescription)
+// }
+
+// // ENCDEC
+
+// print("\n*** ENCDEC ***")
+
+// do {
+//     let ivHex = "31313131313131313131313131313131"
+//     let plaintext = "secret"
+
+//     let enc = try encrypt(key: key, iv: ivHex.uInt8FromHex!, plaintext: Array(plaintext.utf8))
+//     print("plain (str) = \(plaintext)")
+//     print("iv    (hex) = \(ivHex)")
+//     print("key   (hex) = \(bytes2Hex(bytes: key))")
+//     print("enc   (hex) = \(bytes2Hex(bytes: enc))")
+//     print("enc   (b64) = \(Data(enc).base64EncodedString())")
+
+//     let dec = try decrypt(key: key, iv: ivHex.uInt8FromHex!, cyphertext: enc)
+//     print("dec   (hex) = \(bytes2Hex(bytes: dec))")
+//     print("dec   (str) = \(String(decoding: dec, as: UTF8.self))")
+
+// } catch {
+//     print(error)
+// }
+
+// // echo "1" | openssl enc -aes-256-cbc -pbkdf2 -md sha512 -iter 250000 -a -A -S "201bd811b4d8af1a" -iv "378385397a15a925b0c394ac5a10187a" -k "pass"
+
+// // echo "123" | openssl enc -aes-256-cbc -a -A -S "201bd811b4d8af1a" -iv "378385397a15a925b0c394ac5a10187a" -K "033e0d92c447e24629077fc8bc26334d5b8f34994fe4956fffd22bd42719e412"
+
+// let str = """
+// ############  salt:iv:aes_256_cbc_pbkdf2_sha512_250000_base64(bin) #############
+
+// 1c7c0cfa0896c787:c3d0b299be64e37fe8137f6d1aa8d8f4:CcVRbplCd29Aj0Tm/PEWwoNJpsdRi7
+// yrPrTpDeB6dueq7cdszelqLN1kyURn8F6r
+// """
+
+// do {
+//     let extracted = try unbundleCypherParams(bundle: str)
+//     print("************************")
+//     // print(str)
+//     print("************************")
+//     // print(extracted)
+//     print("************************")
+
+//     let dec = try decrypt(key: key, iv: extracted.iv, cyphertext: extracted.cyphertext)
+
+//     print("dec   (hex) = \(bytes2Hex(bytes: dec))")
+//     print("dec   (str) = \(String(decoding: dec, as: UTF8.self))")
+// } catch {
+//     print(error)
+// }
+
+// var str2 = "1245634zherh ret herth erth etrhtrhhrthhthtrerethrte"
+
+// print("************************")
+
+// print(str2.split(len: 3))
