@@ -5,8 +5,6 @@ let SALT_LEN = 8
 let IV_LEN = 16
 let KEY_LEN = 32
 
-let COMMENT = "############  salt:iv:aes_256_cbc_pbkdf2_sha512_250000_base64(bin) #############"
-
 enum PBKDF2_ERR: Error {
     case SALT_LEN
     case PASSWORD_LEN
@@ -115,7 +113,7 @@ func bytes2Hex(bytes: [UInt8]) -> String {
 }
 
 func bundleCypherParams(salt: [UInt8], iv: [UInt8], cyphertext: [UInt8]) throws -> String {
-    return "\(COMMENT)\n\n" + "\(bytes2Hex(bytes: salt)):\(bytes2Hex(bytes: iv)):\(Data(cyphertext).base64EncodedString())".split(len: 80)
+    return "\(bytes2Hex(bytes: salt)):\(bytes2Hex(bytes: iv)):\(Data(cyphertext).base64EncodedString())".split(len: 80)
 }
 
 func unbundleCypherParams(bundle: String) throws -> (salt: [UInt8], iv: [UInt8], cyphertext: [UInt8]) {
