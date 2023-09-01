@@ -122,13 +122,8 @@ struct ContentView: View {
                                         if try resourceValues.fileSize ?? { throw FileError.readSize }() > MAX_FILE_SIZE { throw FileError.size }
 
                                         let fileContent = try String(decoding: Data(contentsOf: fileURL), as: UTF8.self)
-                                        print("1")
                                         let (salt, iv, cyphertext) = try unbundleCypherParams(bundle: fileContent)
-                                        print("2")
-
                                         let key = try pbkdf2(password: password, salt: salt)
-                                        print("3")
-
                                         let plaintext = try decrypt(key: key, iv: iv, cyphertext: cyphertext)
 
                                         do {
@@ -137,7 +132,7 @@ struct ContentView: View {
                                             alertMessage = message.key
                                             alert = true
                                         } catch {
-                                            throw FileError.format
+                                            throw DECRYPT_ERR.WRONG_PASSWORD
                                         }
 
                                     } catch {
