@@ -72,11 +72,17 @@ struct ContentView: View {
 
                             let encoder = JSONEncoder()
                             encoder.outputFormatting = [.prettyPrinted, .withoutEscapingSlashes]
-                            
+
                             do {
                                 let message = try String(data: encoder.encode(messageContainer), encoding: .utf8)!
-                                print(message)
-                                // document = EncDocument(text: encoded.data(using: .utf8)!.base64EncodedString())
+                                var salt = [UInt8](repeating: 0, count: SALT_LEN)
+                                _ = SecRandomCopyBytes(kSecRandomDefault, SALT_LEN, &salt)
+                                var iv = [UInt8](repeating: 0, count: IV_LEN)
+                                _ = SecRandomCopyBytes(kSecRandomDefault, IV_LEN, &iv)
+                                let key = try pbkdf2(password: password, salt: salt)
+                                let cyphertext = try encrypt(key: key, iv: iv, plaintext: Array(message.utf8))
+                                let bundledCypher = try bundleCypherParams(salt: salt, iv: iv, cyphertext: cyphertext)
+                                document = EncDocument(text: bundledCypher)
                                 exporting = true
                             } catch {
                                 alertMessage = error.localizedDescription
@@ -91,11 +97,11 @@ struct ContentView: View {
                                 defaultFilename: DEFAULT_FILENAME
                             ) { result in
                                 switch result {
-                                case let .success(file):
-                                    print(file)
                                 case let .failure(error):
                                     alertMessage = error.localizedDescription
                                     alert = true
+                                default:
+                                    break
                                 }
                             }
                         Button(action: {
@@ -115,15 +121,20 @@ struct ContentView: View {
 
                                         if try resourceValues.fileSize ?? { throw FileError.readSize }() > MAX_FILE_SIZE { throw FileError.size }
 
-                                        let content = try Data(contentsOf: fileURL)
-                                        let decodedData = try Data(base64Encoded: String(decoding: content, as: UTF8.self)) ?? { throw FileError.format }()
-                                        // let decodedString = try String(data: decodedData, encoding: .utf8) ?? { throw FileError.format }()
+                                        let fileContent = try String(decoding: Data(contentsOf: fileURL), as: UTF8.self)
+                                        print("1")
+                                        let (salt, iv, cyphertext) = try unbundleCypherParams(bundle: fileContent)
+                                        print("2")
+
+                                        let key = try pbkdf2(password: password, salt: salt)
+                                        print("3")
+
+                                        let plaintext = try decrypt(key: key, iv: iv, cyphertext: cyphertext)
 
                                         do {
                                             let decoder = JSONDecoder()
-
-                                            let encStruct = try decoder.decode(MessageContainer.self, from: decodedData)
-                                            alertMessage = encStruct.path!
+                                            let message = try decoder.decode(MessageContainer.self, from: Data(plaintext))
+                                            alertMessage = message.key
                                             alert = true
                                         } catch {
                                             throw FileError.format
