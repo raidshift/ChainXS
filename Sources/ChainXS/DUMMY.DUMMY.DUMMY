@@ -74,23 +74,23 @@ extension String {
             return UInt8(self[startIndex ... endIndex], radix: 16)
         }
     }
-}
 
-func splitStringIntoLines(str: String, maxLineLength: Int) -> String {
-    if str.count == 0 { return "" }
-    if maxLineLength < 1 { return str }
-    var splitStr = ""
+    func split(len: Int) -> String {
+        if self.count == 0 { return "" }
+        if len < 1 { return str }
+        var splitStr = ""
 
-    var im = 0
-    repeat {
-        let start = str.index(str.startIndex, offsetBy: im)
-        im += maxLineLength
-        let end = str.index(str.startIndex, offsetBy: im >= str.count ? str.count - 1 : im - 1)
-        splitStr = splitStr + String(str[start ... end])
-        if im < str.count { splitStr += "\n" }
-    } while im < str.count
+        var im = 0
+        repeat {
+            let start = self.index(self.startIndex, offsetBy: im)
+            im += len
+            let end = self.index(self.startIndex, offsetBy: im >= self.count ? self.count - 1 : im - 1)
+            splitStr = splitStr + String(self[start ... end])
+            if im < self.count { splitStr += "\n" }
+        } while im < self.count
 
-    return splitStr
+        return splitStr
+    }
 }
 
 func bytes2Hex(bytes: [UInt8]) -> String {
@@ -154,8 +154,10 @@ let str = """
 yrPrTpDeB6dueq7cdszelqLN1kyURn8F6r
 """
 
-func bundleCypherParams(salt _: [UInt8], iv _: [UInt8], cyphertext _: [UInt8]) throws -> String {
+func bundleCypherParams(salt : [UInt8], iv : [UInt8], cyphertext : [UInt8]) throws -> String {
     var bundle = COMMENT
+    bundle+="\n\n"
+    bundle+="\(bytes2Hex(bytes: salt)):\(bytes2Hex(bytes: iv)):\(Data(cyphertext).base64EncodedString())"
     return bundle
 }
 
@@ -191,10 +193,8 @@ do {
     print(error)
 }
 
-
-
 var str2 = "1245634zherh ret herth erth etrhtrhhrthhthtrerethrte"
 
 print("************************")
 
-print(splitStringIntoLines(str: str2, maxLineLength: 3))
+print(str2.split(len: 3))
