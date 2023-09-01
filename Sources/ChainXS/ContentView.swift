@@ -71,9 +71,10 @@ struct ContentView: View {
                             let encStruct = EncryptStruct(key: userProvidedKeys.key, passphrase: userProvidedKeys.passphrase, path: derivationData.path, level: derivationData.selectedLevel)
 
                             let encoder = JSONEncoder()
-                            encoder.outputFormatting = .prettyPrinted
+                            encoder.outputFormatting = [.prettyPrinted, .withoutEscapingSlashes]
                             do {
                                 let encoded = try String(data: encoder.encode(encStruct), encoding: .utf8)!
+                                print(encoded)
                                 document = EncDocument(text: encoded.data(using: .utf8)!.base64EncodedString())
                                 exporting = true
                             } catch {

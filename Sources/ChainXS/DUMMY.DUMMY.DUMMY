@@ -1,10 +1,11 @@
 import CommonCrypto
-import CryptoKit
 import Foundation
 
 let SALT_LEN = 8
 let IV_LEN = 16
 let KEY_LEN = 32
+
+let COMMENT = "############  salt:iv:aes_256_cbc_pbkdf2_sha512_250000_base64(bin) #############"
 
 enum PBKDF2_ERR: Error {
     case SALT_LEN
@@ -136,29 +137,28 @@ let str = """
 yrPrTpDeB6dueq7cdszelqLN1kyURn8F6r
 """
 
-func extractEncrypted(_ str: String) throws -> (salt: [UInt8], iv: [UInt8], cyphertext: [UInt8]) {
-    let lines = str.components(separatedBy: "\n")
-    var extracted = ""
+func bundleCypherParams(salt _: [UInt8], iv _: [UInt8], cyphertext _: [UInt8]) throws -> String {
+    var bundle = COMMENT
+}
+
+func unbundleCypherParams(bundle: String) throws -> (salt: [UInt8], iv: [UInt8], cyphertext: [UInt8]) {
+    let lines = bundle.components(separatedBy: "\n")
+    var cypherBundle = ""
 
     lines.forEach {
         let line = $0.trimmingCharacters(in: .whitespaces)
         if line != "", !line.hasPrefix("#") {
-            extracted += line
+            cypherBundle += line
         }
     }
 
-    let params = (extracted.filter { !$0.isWhitespace }).components(separatedBy: ":")
+    let params = (cypherBundle.filter { !$0.isWhitespace }).components(separatedBy: ":")
 
-    let salt = try params[0].uInt8FromHex ?? { throw ENCDEC_ERR.FORMAT_SALT }()
-    let iv = try params[1].uInt8FromHex ?? { throw ENCDEC_ERR.FORMAT_IV }()
-    let cyphertext = try (Data(base64Encoded: params[2]) ?? { throw ENCDEC_ERR.FORMAT_CYPHERTEXT }())
-
-    print(params[2])
-    return (salt, iv, [UInt8](cyphertext))
+    return try (params[0].uInt8FromHex ?? { throw ENCDEC_ERR.FORMAT_SALT }(), params[1].uInt8FromHex ?? { throw ENCDEC_ERR.FORMAT_IV }(), [UInt8]((Data(base64Encoded: params[2]) ?? { throw ENCDEC_ERR.FORMAT_CYPHERTEXT }())))
 }
 
 do {
-    let extracted = try extractEncrypted(str)
+    let extracted = try unbundleCypherParams(bundle: str)
     print("************************")
     // print(str)
     print("************************")
@@ -171,4 +171,16 @@ do {
     print("dec   (str) = \(String(decoding: dec, as: UTF8.self))")
 } catch {
     print(error)
+}
+
+func splitStringIntoLines(str: String, maxLineLength: Int) -> String {
+    var i = 0
+    let splitStr = ""
+
+    repeat {
+        let start = str.index(str.startIndex, offsetBy: 1)
+        let end = str.index(str.startIndex, offsetBy: 2)
+    } while i * maxLineLength < str.count
+
+    return "a"
 }
