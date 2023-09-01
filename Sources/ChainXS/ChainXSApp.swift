@@ -84,20 +84,6 @@ struct CustomTextField: View {
             .lineLimit(1)
             .disableAutocorrection(true)
             .textFieldStyle(PlainTextFieldStyle())
-            .padding(8)
-    }
-}
-
-struct CustomSecureField: View {
-    var title: String
-    var text: Binding<String>
-
-    var body: some View {
-        SecureField(title, text: text)
-            .lineLimit(1)
-            .disableAutocorrection(true)
-            .textFieldStyle(PlainTextFieldStyle())
-            .textContentType(.password)
     }
 }
 

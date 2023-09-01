@@ -66,7 +66,7 @@ struct ContentView: View {
                     }
                     Divider()
                     HStack {
-                        CustomSecureField(title: "enter password ...", text: $password).foregroundColor(SUCCESS).disabled(isDisabledTextField).frame(width: 120)
+                        CustomTextField(title: "enter encryption key ...", text: $password).foregroundColor(SUCCESS).disabled(isDisabledTextField).frame(width: 140)
                         Button(action: {
                             let encStruct = EncryptStruct(key: userProvidedKeys.key, passphrase: userProvidedKeys.passphrase, path: derivationData.path, level: derivationData.selectedLevel)
 
@@ -117,8 +117,9 @@ struct ContentView: View {
                                         let decodedData = try Data(base64Encoded: String(decoding: content, as: UTF8.self)) ?? { throw FileError.format }()
                                         // let decodedString = try String(data: decodedData, encoding: .utf8) ?? { throw FileError.format }()
 
-                                        let decoder = JSONDecoder()
                                         do {
+                                            let decoder = JSONDecoder()
+
                                             let encStruct = try decoder.decode(EncryptStruct.self, from: decodedData)
                                             alertMessage = encStruct.path!
                                             alert = true
@@ -143,12 +144,14 @@ struct ContentView: View {
                 CustomTextField(title: "enter mnemonic or extended key ...", text: $userProvidedKeys.key)
                     .foregroundColor(mnemonicColor)
                     .disabled(isDisabledTextField)
+                    .padding(8)
                 if !derivationData.isExtendedKey && mnemonicColor != FAILURE {
                     Text("Mnemonic Passphrase").font(.headline)
 
                     CustomTextField(title: "enter optional mnemonic passphrase ...", text: $userProvidedKeys.passphrase)
                         .foregroundColor(SUCCESS)
                         .disabled(isDisabledTextField)
+                        .padding(8)
                 }
                 HStack {
                     Text("Derivation Path").font(.headline)
@@ -174,6 +177,7 @@ struct ContentView: View {
                     CustomTextField(title: "enter derivation path ...", text: $derivationData.path)
                         .foregroundColor(derivationpathColor)
                         .disabled(isDisabledTextField)
+                        .padding(8)
                     Text("Derive level").font(.headline)
                     Stepper("\(derivationData.selectedLevel)", value: $derivationData.selectedLevel, in: 1 ... derivationData.maxLevel).foregroundColor(derivationpathColor)
                 }
