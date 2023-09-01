@@ -25,7 +25,7 @@ let MONO_FONT_SM = Font
 let DEFAULT_FILENAME = "key"
 let MAX_FILE_SIZE = 10240
 
-struct EncryptStruct: Codable {
+struct MessageContainer: Codable {
     var key: String
     var passphrase: String?
     var path: String?

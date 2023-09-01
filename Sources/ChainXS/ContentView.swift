@@ -68,14 +68,15 @@ struct ContentView: View {
                     HStack {
                         CustomTextField(title: "enter encryption key ...", text: $password).foregroundColor(SUCCESS).disabled(isDisabledTextField).frame(width: 140)
                         Button(action: {
-                            let encStruct = EncryptStruct(key: userProvidedKeys.key, passphrase: userProvidedKeys.passphrase, path: derivationData.path, level: derivationData.selectedLevel)
+                            let messageContainer = MessageContainer(key: userProvidedKeys.key, passphrase: userProvidedKeys.passphrase, path: derivationData.path, level: derivationData.selectedLevel)
 
                             let encoder = JSONEncoder()
                             encoder.outputFormatting = [.prettyPrinted, .withoutEscapingSlashes]
+                            
                             do {
-                                let encoded = try String(data: encoder.encode(encStruct), encoding: .utf8)!
-                                print(encoded)
-                                document = EncDocument(text: encoded.data(using: .utf8)!.base64EncodedString())
+                                let message = try String(data: encoder.encode(messageContainer), encoding: .utf8)!
+                                print(message)
+                                // document = EncDocument(text: encoded.data(using: .utf8)!.base64EncodedString())
                                 exporting = true
                             } catch {
                                 alertMessage = error.localizedDescription
@@ -121,7 +122,7 @@ struct ContentView: View {
                                         do {
                                             let decoder = JSONDecoder()
 
-                                            let encStruct = try decoder.decode(EncryptStruct.self, from: decodedData)
+                                            let encStruct = try decoder.decode(MessageContainer.self, from: decodedData)
                                             alertMessage = encStruct.path!
                                             alert = true
                                         } catch {
