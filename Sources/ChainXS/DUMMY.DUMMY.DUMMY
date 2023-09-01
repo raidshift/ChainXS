@@ -63,7 +63,7 @@ extension Data {
     }
 }
 
-extension StringProtocol {
+extension String {
     var uInt8FromHex: [UInt8]? {
         if !allSatisfy({ $0.isHexDigit }) || count % 2 != 0 { return nil }
 
@@ -74,6 +74,23 @@ extension StringProtocol {
             return UInt8(self[startIndex ... endIndex], radix: 16)
         }
     }
+}
+
+func splitStringIntoLines(str: String, maxLineLength: Int) -> String {
+    if str.count == 0 { return "" }
+    if maxLineLength < 1 { return str }
+    var splitStr = ""
+
+    var im = 0
+    repeat {
+        let start = str.index(str.startIndex, offsetBy: im)
+        im += maxLineLength
+        let end = str.index(str.startIndex, offsetBy: im >= str.count ? str.count - 1 : im - 1)
+        splitStr = splitStr + String(str[start ... end])
+        if im < str.count { splitStr += "\n" }
+    } while im < str.count
+
+    return splitStr
 }
 
 func bytes2Hex(bytes: [UInt8]) -> String {
@@ -139,6 +156,7 @@ yrPrTpDeB6dueq7cdszelqLN1kyURn8F6r
 
 func bundleCypherParams(salt _: [UInt8], iv _: [UInt8], cyphertext _: [UInt8]) throws -> String {
     var bundle = COMMENT
+    return bundle
 }
 
 func unbundleCypherParams(bundle: String) throws -> (salt: [UInt8], iv: [UInt8], cyphertext: [UInt8]) {
@@ -173,14 +191,10 @@ do {
     print(error)
 }
 
-func splitStringIntoLines(str: String, maxLineLength: Int) -> String {
-    var i = 0
-    let splitStr = ""
 
-    repeat {
-        let start = str.index(str.startIndex, offsetBy: 1)
-        let end = str.index(str.startIndex, offsetBy: 2)
-    } while i * maxLineLength < str.count
 
-    return "a"
-}
+var str2 = "1245634zherh ret herth erth etrhtrhhrthhthtrerethrte"
+
+print("************************")
+
+print(splitStringIntoLines(str: str2, maxLineLength: 3))
