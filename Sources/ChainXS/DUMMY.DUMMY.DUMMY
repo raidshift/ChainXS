@@ -101,10 +101,8 @@ func bytes2Hex(bytes: [UInt8]) -> String {
     return string
 }
 
-
-
 func bundleCypherParams(salt: [UInt8], iv: [UInt8], cyphertext: [UInt8]) throws -> String {
-    return "\(COMMENT)\n\n\(bytes2Hex(bytes: salt)):\(bytes2Hex(bytes: iv)):\(Data(cyphertext).base64EncodedString())"
+    return "\(COMMENT)\n\n" + "\(bytes2Hex(bytes: salt)):\(bytes2Hex(bytes: iv)):\(Data(cyphertext).base64EncodedString())".split(len: 80)
 }
 
 func unbundleCypherParams(bundle: String) throws -> (salt: [UInt8], iv: [UInt8], cyphertext: [UInt8]) {
@@ -123,9 +121,8 @@ func unbundleCypherParams(bundle: String) throws -> (salt: [UInt8], iv: [UInt8],
     return try (params[0].uInt8FromHex ?? { throw ENCDEC_ERR.FORMAT_SALT }(), params[1].uInt8FromHex ?? { throw ENCDEC_ERR.FORMAT_IV }(), [UInt8]((Data(base64Encoded: params[2]) ?? { throw ENCDEC_ERR.FORMAT_CYPHERTEXT }())))
 }
 
-
 let password = "1234"
-let message = "Hello World !!! Hello World ! Hello World !!"
+let message = "Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!Hi!"
 
 var salt = [UInt8](repeating: 0, count: SALT_LEN)
 _ = SecRandomCopyBytes(kSecRandomDefault, SALT_LEN, &salt)
@@ -141,12 +138,11 @@ let bundledCypher = try bundleCypherParams(salt: salt, iv: iv, cyphertext: cyphe
 
 print(bundledCypher)
 
-let (salt2,iv2,cyphertext2) = try unbundleCypherParams(bundle: bundledCypher)
+let (salt2, iv2, cyphertext2) = try unbundleCypherParams(bundle: bundledCypher)
 var key2 = try pbkdf2(password: password, salt: salt2)
 
 let plaintext = try decrypt(key: key2, iv: iv2, cyphertext: cyphertext2)
 print("plaintext = \(String(decoding: plaintext, as: UTF8.self))")
-
 
 // openssl kdf -keylen 32 -kdfopt digest:SHA512 -kdfopt pass:pass -kdfopt salt:11111111 -kdfopt iter:250000 PBKDF2
 
