@@ -66,7 +66,7 @@ struct ContentView: View {
                     }
                     Divider()
                     HStack {
-                        CustomTextField(title: "enter encryption key ...", text: $password).foregroundColor(SUCCESS).disabled(isDisabledTextField).frame(width: 140)
+                        CustomTextField(title: "enter password ...", text: $password).foregroundColor(SUCCESS).disabled(isDisabledTextField).frame(width: 120)
                         Button(action: {
                             let messageContainer = MessageContainer(key: userProvidedKeys.key, passphrase: userProvidedKeys.passphrase, path: derivationData.path, level: derivationData.selectedLevel)
 
@@ -100,8 +100,8 @@ struct ContentView: View {
                                 case let .failure(error):
                                     alertMessage = error.localizedDescription
                                     alert = true
-                                default:
-                                    break
+                                case .success:
+                                    password = ""
                                 }
                             }
                         Button(action: {
@@ -129,8 +129,11 @@ struct ContentView: View {
                                         do {
                                             let decoder = JSONDecoder()
                                             let message = try decoder.decode(MessageContainer.self, from: Data(plaintext))
-                                            alertMessage = message.key
-                                            alert = true
+                                            userProvidedKeys.key = message.key
+                                            userProvidedKeys.passphrase = message.passphrase
+                                            derivationData.path = message.path
+                                            derivationData.selectedLevel = message.level
+                                            password = ""
                                         } catch {
                                             throw DECRYPT_ERR.WRONG_PASSWORD
                                         }

@@ -27,8 +27,8 @@ let MAX_FILE_SIZE = 10240
 
 struct MessageContainer: Codable {
     var key: String
-    var passphrase: String?
-    var path: String?
+    var passphrase: String
+    var path: String
     var level: Int
 }
 
