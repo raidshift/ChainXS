@@ -76,18 +76,18 @@ extension String {
     }
 
     func split(len: Int) -> String {
-        if self.count == 0 { return "" }
+        if count == 0 { return "" }
         if len < 1 { return str }
         var splitStr = ""
 
         var im = 0
         repeat {
-            let start = self.index(self.startIndex, offsetBy: im)
+            let start = index(startIndex, offsetBy: im)
             im += len
-            let end = self.index(self.startIndex, offsetBy: im >= self.count ? self.count - 1 : im - 1)
+            let end = index(startIndex, offsetBy: im >= count ? count - 1 : im - 1)
             splitStr = splitStr + String(self[start ... end])
-            if im < self.count { splitStr += "\n" }
-        } while im < self.count
+            if im < count { splitStr += "\n" }
+        } while im < count
 
         return splitStr
     }
@@ -154,11 +154,8 @@ let str = """
 yrPrTpDeB6dueq7cdszelqLN1kyURn8F6r
 """
 
-func bundleCypherParams(salt : [UInt8], iv : [UInt8], cyphertext : [UInt8]) throws -> String {
-    var bundle = COMMENT
-    bundle+="\n\n"
-    bundle+="\(bytes2Hex(bytes: salt)):\(bytes2Hex(bytes: iv)):\(Data(cyphertext).base64EncodedString())"
-    return bundle
+func bundleCypherParams(salt: [UInt8], iv: [UInt8], cyphertext: [UInt8]) throws -> String {
+    return "\(COMMENT)\n\n\(bytes2Hex(bytes: salt)):\(bytes2Hex(bytes: iv)):\(Data(cyphertext).base64EncodedString())"
 }
 
 func unbundleCypherParams(bundle: String) throws -> (salt: [UInt8], iv: [UInt8], cyphertext: [UInt8]) {
