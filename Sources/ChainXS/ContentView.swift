@@ -119,7 +119,7 @@ struct ContentView: View {
                                         defer { if didStartAccessing { fileURL.stopAccessingSecurityScopedResource() }}
                                         let resourceValues = try fileURL.resourceValues(forKeys: [.fileSizeKey])
 
-                                        if try resourceValues.fileSize ?? { throw FileError.readSize }() > MAX_FILE_SIZE { throw FileError.size }
+                                        if try resourceValues.fileSize ?? { throw FILE_ERR.READ_SIZE }() > MAX_FILE_SIZE { throw FILE_ERR.SIZE }
 
                                         let fileContent = try String(decoding: Data(contentsOf: fileURL), as: UTF8.self)
                                         let (salt, iv, cyphertext) = try unbundleCypherParams(bundle: fileContent)

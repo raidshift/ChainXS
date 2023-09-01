@@ -63,7 +63,7 @@ extension DECRYPT_ERR: LocalizedError {
         case .CORE:
             return NSLocalizedString("Unable to decrypt data", comment: "Unable to decrypt data")
         case .FORMAT:
-            return NSLocalizedString("Unable to decrypt data", comment: "Unable to decrypt data")
+            return NSLocalizedString("Invalid data", comment: "Invalid data")
         case .WRONG_PASSWORD:
             return NSLocalizedString("Wrong password", comment: "Wrong password")
         }

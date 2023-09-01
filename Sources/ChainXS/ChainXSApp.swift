@@ -32,20 +32,17 @@ struct MessageContainer: Codable {
     var level: Int
 }
 
-public enum FileError: Error {
-    case readSize
-    case format
-    case size
+public enum FILE_ERR: Error {
+    case READ_SIZE
+    case SIZE
 }
 
-extension FileError: LocalizedError {
+extension FILE_ERR: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case .format:
-            return NSLocalizedString("Invalid data format", comment: "Invalid data format")
-        case .readSize:
+        case .READ_SIZE:
             return NSLocalizedString("Unable to read files size", comment: "Unable to read file size")
-        case .size:
+        case .SIZE:
             return NSLocalizedString("File size exceeds limit of \(MAX_FILE_SIZE / 1024) KiB", comment: "File size exceeds limit of \(MAX_FILE_SIZE / 1024) KiB")
         }
     }
