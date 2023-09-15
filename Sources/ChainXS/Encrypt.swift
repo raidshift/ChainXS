@@ -1,133 +1,112 @@
 import CommonCrypto
 import Foundation
 
-let SALT_LEN = 8
-let IV_LEN = 16
-let KEY_LEN = 32
-
-enum PBKDF2_ERR: Error {
-    case SALT_LEN
-    case PASSWORD_LEN
-    case CORE
-}
-
-extension PBKDF2_ERR: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case .SALT_LEN:
-            return NSLocalizedString("Unable to process password", comment: "Unable to process password")
-        case .PASSWORD_LEN:
-            return NSLocalizedString("Invalid password", comment: "Invalid password")
-        case .CORE:
-            return NSLocalizedString("Unable to process password", comment: "Unable to process password")
-        }
-    }
-}
+let PBKDF2_ITER = 1_000_000
 
 enum ENCRYPT_ERR: Error {
-    case KEY_LEN
-    case IV_LEN
-    case CORE
+    case FORMAT
+    case PASSWORD
+    case CORE_KDF
+    case CORE_AES
 }
+
+let ENCRYPT_ERR_TEXT_FORMAT = "Input data is too short"
+let ENCRYPT_ERR_TEXT_PASSWORD = "Incorrect password"
+let ENCRYPT_ERR_CORE_KDF = "Invoking key derivation failed"
+let ENCRYPT_ERR_CORE_AES = "Invoking encryption/decryption failed"
 
 extension ENCRYPT_ERR: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case .KEY_LEN:
-            return NSLocalizedString("Unable to encrypt data", comment: "Unable to encrypt data")
-        case .IV_LEN:
-            return NSLocalizedString("Unable to encrypt data", comment: "Unable to encrypt data")
-        case .CORE:
-            return NSLocalizedString("Unable to encrypt data", comment: "Unable to encrypt data")
-        }
-    }
-}
-
-enum DECRYPT_ERR: Error {
-    case KEY_LEN
-    case IV_LEN
-    case CORE
-    case FORMAT
-    case WRONG_PASSWORD
-}
-
-extension DECRYPT_ERR: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case .KEY_LEN:
-            return NSLocalizedString("Unable to decrypt data", comment: "Unable to decrypt data")
-        case .IV_LEN:
-            return NSLocalizedString("Unable to decrypt data", comment: "Unable to decrypt data")
-        case .CORE:
-            return NSLocalizedString("Unable to decrypt data", comment: "Unable to decrypt data")
         case .FORMAT:
-            return NSLocalizedString("Invalid data", comment: "Invalid data")
-        case .WRONG_PASSWORD:
-            return NSLocalizedString("Wrong password", comment: "Wrong password")
+            return NSLocalizedString(ENCRYPT_ERR_TEXT_FORMAT, comment: ENCRYPT_ERR_TEXT_FORMAT)
+        case .PASSWORD:
+            return NSLocalizedString(ENCRYPT_ERR_TEXT_PASSWORD, comment: ENCRYPT_ERR_TEXT_PASSWORD)
+        case .CORE_KDF:
+            return NSLocalizedString(ENCRYPT_ERR_CORE_KDF, comment: ENCRYPT_ERR_CORE_KDF)
+        case .CORE_AES:
+            return NSLocalizedString(ENCRYPT_ERR_CORE_AES, comment: ENCRYPT_ERR_CORE_AES)
         }
     }
 }
 
-func pbkdf2(password: String, salt: [UInt8]) throws -> [UInt8] {
-    if salt.count != SALT_LEN { throw PBKDF2_ERR.SALT_LEN }
-    if password.count < 1 || password.count > 100 { throw PBKDF2_ERR.PASSWORD_LEN }
+struct Encrypt {
+    private var buffer: Data
+    var cyphertext = Data()
 
-    let passwordData = password.data(using: .utf8)!
-    var derivedKeyData = [UInt8](repeating: 0, count: kCCKeySizeAES256)
+    init(password: inout Data, plaintext: inout Data) throws {
+        var plaintext = Data(repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH)) + plaintext
+        var key = Data(repeating: 0, count: kCCKeySizeAES256)
 
-    if CCKeyDerivationPBKDF(CCPBKDFAlgorithm(kCCPBKDF2), password, passwordData.count, salt, salt.count, CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA512), UInt32(250_000), &derivedKeyData, derivedKeyData.count) != kCCSuccess { throw PBKDF2_ERR.CORE }
+        plaintext.withUnsafeMutableBytes { _ = CC_SHA256($0.baseAddress! + Int(CC_SHA256_DIGEST_LENGTH), CC_LONG($0.count - Int(CC_SHA256_DIGEST_LENGTH)), $0.baseAddress!) }
+        buffer = try Data(randomOfLength: kCCBlockSizeAES128) + Data(repeating: 0, count: plaintext.count + kCCBlockSizeAES128)
 
-    return derivedKeyData
-}
+        try key.withUnsafeMutableBytes { keyBytes in
+            try buffer.withUnsafeBytes { saltBytes in
+                try password.withUnsafeBytes { passwordBytes in
+                    if CCKeyDerivationPBKDF(CCPBKDFAlgorithm(kCCPBKDF2), passwordBytes.baseAddress!, password.count, saltBytes.baseAddress!, kCCBlockSizeAES128, CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA512), UInt32(PBKDF2_ITER), keyBytes.baseAddress!, kCCKeySizeAES256) != kCCSuccess { throw ENCRYPT_ERR.CORE_KDF }
+                }
+            }
+        }
 
-func encrypt(key: [UInt8], iv: [UInt8], plaintext: [UInt8]) throws -> [UInt8] {
-    if key.count != KEY_LEN { throw ENCRYPT_ERR.KEY_LEN }
-    if iv.count != IV_LEN { throw ENCRYPT_ERR.IV_LEN }
+        let toBytesMaxLen = buffer.count - kCCBlockSizeAES128
+        var toBytesLen = 0
 
-    var cyphertext = [UInt8](repeating: 0, count: plaintext.count + IV_LEN)
-    var len = 0
-
-    if CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), CCOptions(kCCOptionPKCS7Padding), key, kCCKeySizeAES256, iv, plaintext, plaintext.count, &cyphertext, cyphertext.count, &len) != kCCSuccess { throw ENCRYPT_ERR.CORE }
-
-    return Array(cyphertext[0 ..< len])
-}
-
-func decrypt(key: [UInt8], iv: [UInt8], cyphertext: [UInt8]) throws -> [UInt8] {
-    if key.count != KEY_LEN { throw DECRYPT_ERR.KEY_LEN }
-    if iv.count != IV_LEN { throw DECRYPT_ERR.IV_LEN }
-
-    var plaintext = [UInt8](repeating: 0, count: cyphertext.count)
-    var len = 0
-
-    if CCCrypt(CCOperation(kCCDecrypt), CCAlgorithm(kCCAlgorithmAES), CCOptions(kCCOptionPKCS7Padding), key, kCCKeySizeAES256, iv, cyphertext, cyphertext.count, &plaintext, plaintext.count, &len) != kCCSuccess { throw DECRYPT_ERR.CORE }
-
-    return Array(plaintext[0 ..< len])
-}
-
-func bytes2Hex(bytes: [UInt8]) -> String {
-    var string = ""
-    for byte in bytes {
-        string = string + String(format: "%02x", byte)
-    }
-    return string
-}
-
-func bundleCypherParams(salt: [UInt8], iv: [UInt8], cyphertext: [UInt8]) throws -> String {
-    return "\(bytes2Hex(bytes: salt)):\(bytes2Hex(bytes: iv)):\(Data(cyphertext).base64EncodedString())".split(len: 80)
-}
-
-func unbundleCypherParams(bundle: String) throws -> (salt: [UInt8], iv: [UInt8], cyphertext: [UInt8]) {
-    let lines = bundle.components(separatedBy: "\n")
-    var cypherBundle = ""
-
-    lines.forEach {
-        let line = $0.trimmingCharacters(in: .whitespaces)
-        if line != "", !line.hasPrefix("#") {
-            cypherBundle += line
+        try buffer.withUnsafeMutableBytes { toBytes in
+            try key.withUnsafeBytes { keyBytes in
+                try plaintext.withUnsafeBytes { fromBytes in
+                    if CCCrypt(CCOperation(kCCEncrypt), CCAlgorithm(kCCAlgorithmAES), CCOptions(kCCOptionPKCS7Padding), keyBytes.baseAddress!, kCCKeySizeAES256, toBytes.baseAddress!, fromBytes.baseAddress!, fromBytes.count, toBytes.baseAddress! + kCCBlockSizeAES128, toBytesMaxLen, &toBytesLen) != kCCSuccess { throw ENCRYPT_ERR.CORE_AES }
+                }
+            }
+        }
+        buffer.withUnsafeMutableBytes { ptr in
+            cyphertext = Data(bytesNoCopy: ptr.baseAddress!, count: toBytesLen + kCCBlockSizeAES128, deallocator: .none)
         }
     }
-    let params = (cypherBundle.filter { !$0.isWhitespace }).components(separatedBy: ":")
-    if params.count != 3 { throw DECRYPT_ERR.FORMAT }
+}
 
-    return try (params[0].hexaToBytes, params[1].hexaToBytes, [UInt8]((Data(base64Encoded: params[2]) ?? { throw DECRYPT_ERR.FORMAT }())))
+struct Decrypt {
+    private var buffer: Data
+    var plaintext = Data()
+
+    init(password: inout Data, cyphertext: inout Data) throws {
+        if cyphertext.count < Int(CC_SHA256_DIGEST_LENGTH) + 2 * kCCBlockSizeAES128 { throw ENCRYPT_ERR.FORMAT }
+
+        var key = Data(repeating: 0, count: kCCKeySizeAES256)
+        buffer = Data(repeating: 0, count: cyphertext.count - kCCBlockSizeAES128)
+
+        try key.withUnsafeMutableBytes { keyBytes in
+            try cyphertext.withUnsafeBytes { saltBytes in
+                try password.withUnsafeBytes { passwordBytes in
+                    if CCKeyDerivationPBKDF(CCPBKDFAlgorithm(kCCPBKDF2), passwordBytes.baseAddress!, passwordBytes.count, saltBytes.baseAddress!, kCCBlockSizeAES128, CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA512), UInt32(PBKDF2_ITER), keyBytes.baseAddress!, kCCKeySizeAES256) != kCCSuccess { throw ENCRYPT_ERR.CORE_KDF }
+                }
+            }
+        }
+
+        var toBytesLen = 0
+
+        try buffer.withUnsafeMutableBytes { toBytes in
+            try key.withUnsafeBytes { keyBytes in
+                try cyphertext.withUnsafeBytes { fromBytes in
+                    if CCCrypt(CCOperation(kCCDecrypt), CCAlgorithm(kCCAlgorithmAES), CCOptions(kCCOptionPKCS7Padding), keyBytes.baseAddress!, kCCKeySizeAES256, fromBytes.baseAddress!, fromBytes.baseAddress! + kCCBlockSizeAES128, fromBytes.count - kCCBlockSizeAES128, toBytes.baseAddress!, toBytes.count, &toBytesLen) != kCCSuccess { throw ENCRYPT_ERR.CORE_AES }
+                }
+            }
+        }
+
+        var hash = Data()
+        var hash2 = Data(repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+
+        buffer.withUnsafeMutableBytes { ptr in
+            hash = Data(bytesNoCopy: ptr.baseAddress!, count: Int(CC_SHA256_DIGEST_LENGTH), deallocator: .none)
+            plaintext = Data(bytesNoCopy: ptr.baseAddress! + Int(CC_SHA256_DIGEST_LENGTH), count: toBytesLen - Int(CC_SHA256_DIGEST_LENGTH), deallocator: .none)
+        }
+
+        plaintext.withUnsafeBytes { plainBytes in
+            hash2.withUnsafeMutableBytes { hashBytes in
+                _ = CC_SHA256(plainBytes.baseAddress!, CC_LONG(plainBytes.count), hashBytes.baseAddress!)
+            }
+        }
+
+        if hash != hash2 { throw ENCRYPT_ERR.PASSWORD }
+    }
 }

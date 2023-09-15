@@ -112,9 +112,13 @@ struct ChainXSApp: App {
     }
 }
 
+func exitWithError(_ out: String) {
+    (out + "\n").data(using: .utf8).map(FileHandle.standardError.write); exit(1)
+}
+
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillFinishLaunching(_: Notification) {
-        ChainXSContext.createSecp256k1Ctx()
+        do { try ChainXSContext.createSecp256k1Ctx() } catch { exitWithError(error.localizedDescription) }
         ChainXSContext.setNetwork(.MAIN)
         UserDefaults.standard.set(true, forKey: "NSDisabledDictationMenuItem")
         UserDefaults.standard.set(true, forKey: "NSDisabledCharacterPaletteMenuItem")

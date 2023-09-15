@@ -74,15 +74,10 @@ struct ContentView: View {
                             encoder.outputFormatting = [.prettyPrinted, .withoutEscapingSlashes]
 
                             do {
-                                let message = try String(data: encoder.encode(messageContainer), encoding: .utf8)!
-                                var salt = [UInt8](repeating: 0, count: SALT_LEN)
-                                _ = SecRandomCopyBytes(kSecRandomDefault, SALT_LEN, &salt)
-                                var iv = [UInt8](repeating: 0, count: IV_LEN)
-                                _ = SecRandomCopyBytes(kSecRandomDefault, IV_LEN, &iv)
-                                let key = try pbkdf2(password: password, salt: salt)
-                                let cyphertext = try encrypt(key: key, iv: iv, plaintext: Array(message.utf8))
-                                let bundledCypher = try bundleCypherParams(salt: salt, iv: iv, cyphertext: cyphertext)
-                                document = EncDocument(text: bundledCypher)
+                                var passwordData = try password.data(using: .utf8) ?? { throw ENCRYPT_ERR.PASSWORD }()
+                                var cypherData = try encoder.encode(messageContainer)
+                                let enc = try Encrypt(password: &passwordData, plaintext: &cypherData)
+                                document = EncDocument(text: enc.cyphertext.base64EncodedString())
                                 exporting = true
                             } catch {
                                 alertMessage = error.localizedDescription
@@ -118,24 +113,21 @@ struct ContentView: View {
                                         let didStartAccessing = fileURL.startAccessingSecurityScopedResource()
                                         defer { if didStartAccessing { fileURL.stopAccessingSecurityScopedResource() }}
                                         let resourceValues = try fileURL.resourceValues(forKeys: [.fileSizeKey])
-
                                         if try resourceValues.fileSize ?? { throw FILE_ERR.READ_SIZE }() > MAX_FILE_SIZE { throw FILE_ERR.SIZE }
-
-                                        let fileContent = try String(decoding: Data(contentsOf: fileURL), as: UTF8.self)
-                                        let (salt, iv, cyphertext) = try unbundleCypherParams(bundle: fileContent)
-                                        let key = try pbkdf2(password: password, salt: salt)
-                                        let plaintext = try decrypt(key: key, iv: iv, cyphertext: cyphertext)
+                                        var passwordData = try password.data(using: .utf8) ?? { throw ENCRYPT_ERR.PASSWORD }()
+                                        var cypherData = try Data(contentsOf: fileURL).filterBase64
+                                        let dec = try Decrypt(password: &passwordData, cyphertext: &cypherData)
 
                                         do {
                                             let decoder = JSONDecoder()
-                                            let message = try decoder.decode(MessageContainer.self, from: Data(plaintext))
+                                            let message = try decoder.decode(MessageContainer.self, from: dec.plaintext)
                                             userProvidedKeys.key = message.key
                                             userProvidedKeys.passphrase = message.passphrase
                                             derivationData.path = message.path
                                             derivationData.selectedLevel = message.level
                                             password = ""
                                         } catch {
-                                            throw DECRYPT_ERR.WRONG_PASSWORD
+                                            throw ENCRYPT_ERR.PASSWORD
                                         }
 
                                     } catch {

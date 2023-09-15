@@ -1,5 +1,5 @@
 //
-//  Utils.swift
+//  AddressUtils.swift
 //
 //  Created by Laurenz Zielinski
 //
@@ -13,7 +13,7 @@ func isValidPubKey(_ pubKey: Data) -> Bool {
     var secp256k1_pubk = secp256k1_pubkey()
 
     return pubKey.withUnsafeBytes {
-        return secp256k1_ec_pubkey_parse(ChainXSContext.secp256k1Ctx, &secp256k1_pubk, $0.baseAddress!.assumingMemoryBound(to: UInt8.self), pubKey.count) == 1
+        secp256k1_ec_pubkey_parse(ChainXSContext.secp256k1Ctx, &secp256k1_pubk, $0.baseAddress!.assumingMemoryBound(to: UInt8.self), pubKey.count) == 1
     }
 }
 
@@ -21,12 +21,12 @@ func isValidPrivKey(_ privKey: Data?) -> Bool {
     if privKey == nil { return false }
 
     return privKey!.withUnsafeBytes {
-        return privKey!.count == 32 && secp256k1_ec_seckey_verify(ChainXSContext.secp256k1Ctx, $0.baseAddress!.assumingMemoryBound(to: UInt8.self)) == 1
+        privKey!.count == 32 && secp256k1_ec_seckey_verify(ChainXSContext.secp256k1Ctx, $0.baseAddress!.assumingMemoryBound(to: UInt8.self)) == 1
     }
 }
 
-func createPrivKey() -> Data {
-    return Data(randomOfLength: 32)
+func createPrivKey() throws -> Data {
+    return try Data(randomOfLength: 32)
 }
 
 func appendChecksum(_ data: inout Data) throws -> Data {

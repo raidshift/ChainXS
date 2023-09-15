@@ -130,9 +130,9 @@ enum ChainXSContext {
         ChainXSContext.scriptCommand_OP_0 = [0x00, 0x14]
     }
 
-    static func createSecp256k1Ctx() {
+    static func createSecp256k1Ctx() throws {
         ChainXSContext.secp256k1Ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY))
-        Data(randomOfLength: 32).withUnsafeBytes {
+        try Data(randomOfLength: 32).withUnsafeBytes {
             let status = secp256k1_context_randomize(ChainXSContext.secp256k1Ctx!, $0.baseAddress!.assumingMemoryBound(to: UInt8.self))
             assert(status == 1)
         }
