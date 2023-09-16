@@ -77,7 +77,7 @@ struct ContentView: View {
                                 var passwordData = try password.data(using: .utf8) ?? { throw ENCRYPT_ERR.PASSWORD }()
                                 var cypherData = try encoder.encode(messageContainer)
                                 let enc = try Encrypt(password: &passwordData, plaintext: &cypherData)
-                                document = EncDocument(text: enc.cyphertext.base64EncodedString())
+                                document = EncDocument(text: enc.cyphertext.base64EncodedString().split(len: 80) + "\n")
                                 exporting = true
                             } catch {
                                 alertMessage = error.localizedDescription
