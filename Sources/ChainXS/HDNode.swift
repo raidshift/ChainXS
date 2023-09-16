@@ -198,7 +198,7 @@ struct HDNode: CustomStringConvertible {
     }
 
     func ckdFromDerivationPath(_ derivationPath: String) throws -> HDNode {
-        return try ckdFromDerivationPath(decomomposedDerivationPath: try decomposeDerivationPath(derivationPath))
+        return try ckdFromDerivationPath(decomomposedDerivationPath: decomposeDerivationPath(derivationPath))
     }
 
     func getKeyOrAddressByKey(_ key: Int) throws -> String {
@@ -248,7 +248,7 @@ func createMnemonic(_ entropyLen: Int) throws -> String {
     var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
     var mnemonic = ""
 
-    _ = SecRandomCopyBytes(kSecRandomDefault, entropyLen, &bytes)
+    if SecRandomCopyBytes(kSecRandomDefault, entropyLen, &bytes) != 0 { throw DATA_ERR.CORE_RND }
     _ = CC_SHA256(&bytes, CC_LONG(entropyLen), &hash)
     bytes[entropyLen] = hash[0] & (0xFF << (8 - UInt8(entropyLen) / 4))
 
