@@ -74,10 +74,10 @@ struct ContentView: View {
                             encoder.outputFormatting = [.prettyPrinted, .withoutEscapingSlashes]
 
                             do {
-                                var passwordData = try password.data(using: .utf8) ?? { throw ENCRYPT_ERR.PASSWORD }()
+                                var passwordData = try password.data(using: .utf8) ?? { throw ENCRYPT_ERR.AUTHENTICATION }()
                                 var cypherData = try encoder.encode(messageContainer)
-                                let enc = try Encrypt(password: &passwordData, plaintext: &cypherData)
-                                document = EncDocument(text: enc.cyphertext.base64EncodedString().split(len: 80) + "\n")
+                                let ciphertext = try encrypt(password: &passwordData, plaintext: &cypherData)
+                                document = EncDocument(text: ciphertext.base64EncodedString().split(len: 80) + "\n")
                                 exporting = true
                             } catch {
                                 alertMessage = error.localizedDescription
@@ -114,20 +114,20 @@ struct ContentView: View {
                                         defer { if didStartAccessing { fileURL.stopAccessingSecurityScopedResource() }}
                                         let resourceValues = try fileURL.resourceValues(forKeys: [.fileSizeKey])
                                         if try resourceValues.fileSize ?? { throw FILE_ERR.READ_SIZE }() > MAX_FILE_SIZE { throw FILE_ERR.SIZE }
-                                        var passwordData = try password.data(using: .utf8) ?? { throw ENCRYPT_ERR.PASSWORD }()
+                                        var passwordData = try password.data(using: .utf8) ?? { throw ENCRYPT_ERR.AUTHENTICATION }()
                                         var cypherData = try Data(contentsOf: fileURL).filterBase64
-                                        let dec = try Decrypt(password: &passwordData, cyphertext: &cypherData)
+                                        let plaintext = try decrypt(password: &passwordData, ciphertext: &cypherData)
 
                                         do {
                                             let decoder = JSONDecoder()
-                                            let message = try decoder.decode(MessageContainer.self, from: dec.plaintext)
+                                            let message = try decoder.decode(MessageContainer.self, from: plaintext)
                                             userProvidedKeys.key = message.key
                                             userProvidedKeys.passphrase = message.passphrase
                                             derivationData.path = message.path
                                             derivationData.selectedLevel = message.level
                                             password = ""
                                         } catch {
-                                            throw ENCRYPT_ERR.PASSWORD
+                                            throw ENCRYPT_ERR.AUTHENTICATION
                                         }
 
                                     } catch {
