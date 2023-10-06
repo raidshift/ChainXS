@@ -31,8 +31,8 @@ Private
 * Extended private key (yprv)
 * Extended private key (zprv)
 
-### Export
-* ChainXS allows encrypted-file export and import of mnemonic or extended key and derivation path
+### File export
+* ChainXS allows encrypted file export and import of mnemonic or extended key and derivation path
 * Using strong authenticated encryption and password-based key derivation from https://github.com/raidshift/noxs
 
 ### Download precompiled App 
