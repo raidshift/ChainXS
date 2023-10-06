@@ -4,9 +4,9 @@ ChainXS is a macOS Application built in Swift which facilitates derivation of SE
 ![image](https://github.com/raidshift/ChainXS/assets/51262620/0148f0ed-b844-4280-b3bc-0dbc89b86c2a)
 
 ### Input
-* BIP39 Mnemonic (consisting of 12, 15, 18, 21 or 24 words)
-* BIP32, BIP49 or BIP84 Extended Public Key (xpub, ypub, zpub)
-* BIP32, BIP49 or BIP84 Extended Private Key (xprv, yprv, zpprv)
+* BIP39 mnemonic (consisting of 12, 15, 18, 21 or 24 words) & optional passphrase
+* BIP32, BIP49 or BIP84 extended public key (xpub, ypub, zpub)
+* BIP32, BIP49 or BIP84 extended private key (xprv, yprv, zpprv)
 
 ### Derivation paths
 * BIP32 private (starting with "m") and public (starting with "M") derivation path
@@ -31,8 +31,12 @@ Private
 * Extended Private Key (yprv)
 * Extended Private Key (zprv)
 
+### Export/Import
+* ChainXS allows encrypted-file export/import of mnemonic & passphrase, extended public key and derivation path
+* Using authenticated encryption with password-based key derivation from https://github.com/raidshift/noxs
+
 ### Install
-Swift Package Manager (>= v5.7) is required.
+Swift Package Manager (>= v5.9) is required.
 The "build" script builds the project and creates a macOS App in the folder "product"
 
     git clone https://github.com/raidshift/ChainXS.git
