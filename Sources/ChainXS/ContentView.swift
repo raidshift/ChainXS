@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NoXS
 
 extension NSTextField {
     override open var focusRingType: NSFocusRingType {
@@ -74,7 +75,7 @@ struct ContentView: View {
                             encoder.outputFormatting = [.prettyPrinted, .withoutEscapingSlashes]
 
                             do {
-                                var passwordData = try password.data(using: .utf8) ?? { throw ENCRYPT_ERR.AUTHENTICATION }()
+                                var passwordData = try password.data(using: .utf8) ?? { throw NOXS_ERR.AUTHENTICATION }()
                                 var cypherData = try encoder.encode(messageContainer)
                                 let ciphertext = try encrypt(password: &passwordData, plaintext: &cypherData)
                                 document = EncDocument(text: ciphertext.base64EncodedString().split(len: 80) + "\n")
@@ -114,7 +115,7 @@ struct ContentView: View {
                                         defer { if didStartAccessing { fileURL.stopAccessingSecurityScopedResource() }}
                                         let resourceValues = try fileURL.resourceValues(forKeys: [.fileSizeKey])
                                         if try resourceValues.fileSize ?? { throw FILE_ERR.READ_SIZE }() > MAX_FILE_SIZE { throw FILE_ERR.SIZE }
-                                        var passwordData = try password.data(using: .utf8) ?? { throw ENCRYPT_ERR.AUTHENTICATION }()
+                                        var passwordData = try password.data(using: .utf8) ?? { throw NOXS_ERR.AUTHENTICATION }()
                                         var cypherData = try Data(contentsOf: fileURL).filterBase64
                                         let plaintext = try decrypt(password: &passwordData, ciphertext: &cypherData)
 
@@ -127,7 +128,7 @@ struct ContentView: View {
                                             derivationData.selectedLevel = message.level
                                             password = ""
                                         } catch {
-                                            throw ENCRYPT_ERR.AUTHENTICATION
+                                            throw NOXS_ERR.AUTHENTICATION
                                         }
 
                                     } catch {

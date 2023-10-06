@@ -1,0 +1,7 @@
+#!/bin/sh
+
+buildNum=$(plutil -extract CFBundleVersion raw -o - ./Resources/Info.plist)
+
+git add .
+git commit -S -m "build_$buildNum"
+git push

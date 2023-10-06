@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "noxs",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/raidshift/noxs",
+      "state" : {
+        "branch" : "main",
+        "revision" : "76e03efcd999a08cce0884f93189c08ff997fcc8"
+      }
+    },
+    {
       "identity" : "phc-winner-argon2",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/raidshift/phc-winner-argon2",
