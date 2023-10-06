@@ -214,7 +214,8 @@ struct HDNode: CustomStringConvertible {
         case ZPUB_KEY:
             return try! serialize(serializePrivKey: false, prefix: ExtendedKeyPrefix.BIP84)
         case P2PKH_KEY:
-            return try! createP2PKHAddress(compressedPubKey)
+            let p2pkh = try! createP2PKHAddress(compressedPubKey)
+            return p2pkh + String(repeating: " ", count: 34 - p2pkh.count)
         case P2WPKH_KEY:
             return try! createP2WPKHAddress(compressedPubKey)
         case P2SH_P2WPK_KEY:
