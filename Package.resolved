@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/raidshift/noxs",
       "state" : {
-        "branch" : "main",
-        "revision" : "76e03efcd999a08cce0884f93189c08ff997fcc8"
+        "revision" : "523a3aec78930fb3380fe2635ade7e14e53e016b",
+        "version" : "1.1.0"
       }
     },
     {
@@ -25,6 +25,15 @@
       "state" : {
         "revision" : "cd187c632fb812fd93711a9f7e644adb7e5f97f0",
         "version" : "0.1.7"
+      }
+    },
+    {
+      "identity" : "swift-crypto",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-crypto.git",
+      "state" : {
+        "revision" : "60f13f60c4d093691934dc6cfdf5f508ada1f894",
+        "version" : "2.6.0"
       }
     },
     {
