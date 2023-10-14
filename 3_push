@@ -2,6 +2,8 @@
 
 buildNum=$(plutil -extract CFBundleVersion raw -o - ./Resources/Info.plist)
 
+GPG_TTY=$(tty)
+
 git add .
 git commit -S -m "build_$buildNum"
 git push

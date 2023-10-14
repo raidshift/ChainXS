@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/raidshift/noxs",
       "state" : {
-        "revision" : "523a3aec78930fb3380fe2635ade7e14e53e016b",
-        "version" : "1.1.0"
+        "revision" : "06660487437c129d77540422d2e74675ff43e224",
+        "version" : "1.2.0"
       }
     },
     {

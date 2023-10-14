@@ -6,5 +6,5 @@ VER=$(plutil -extract CFBundleShortVersionString raw -o - "$APPDIR/Info.plist")
 BUILD_NUM=$(plutil -extract CFBundleVersion raw -o - "$APPDIR/Info.plist")
 
 zip -r "$APPLOC/$APPNAME-$VER.$BUILD_NUM-macOS.zip" "$APPLOC/$APPNAME.app"
-export GPG_TTY=$(tty)
+GPG_TTY=$(tty)
 gpg -ab "$APPLOC/$APPNAME-$VER.$BUILD_NUM-macOS.zip"
