@@ -71,21 +71,4 @@ extension String {
             return UInt8(lastHexDigitValue * 16 + hexDigitValue)
         }
     }
-
-    func split(len: Int) -> String {
-        if count == 0 { return "" }
-        if len < 1 { return self }
-        var splitStr = ""
-
-        var im = 0
-        repeat {
-            let start = index(startIndex, offsetBy: im)
-            im += len
-            let end = index(startIndex, offsetBy: im >= count ? count - 1 : im - 1)
-            splitStr = splitStr + String(self[start ... end])
-            if im < count { splitStr += "\n" }
-        } while im < count
-
-        return splitStr
-    }
 }

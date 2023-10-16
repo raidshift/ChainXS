@@ -11,6 +11,7 @@ incr=1
 buildNum=`expr $buildNum + $incr`
 plutil -replace CFBundleVersion -string "$buildNum" ./Resources/Info.plist
 
+rm -rf .build
 swift build -c release --arch arm64 --arch x86_64
 
 rm -rf ./product

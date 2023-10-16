@@ -78,7 +78,7 @@ struct ContentView: View {
                                 var passwordData = try password.data(using: .utf8) ?? { throw NOXS_ERR.AUTHENTICATION }()
                                 var cypherData = try encoder.encode(messageContainer)
                                 let ciphertext = try encrypt(password: &passwordData, plaintext: &cypherData)
-                                document = EncDocument(text: ciphertext.base64EncodedString().split(len: 80) + "\n")
+                                document = EncDocument(text: ciphertext.base64EncodedString())
                                 exporting = true
                             } catch {
                                 alertMessage = error.localizedDescription
@@ -116,8 +116,9 @@ struct ContentView: View {
                                         let resourceValues = try fileURL.resourceValues(forKeys: [.fileSizeKey])
                                         if try resourceValues.fileSize ?? { throw FILE_ERR.READ_SIZE }() > MAX_FILE_SIZE { throw FILE_ERR.SIZE }
                                         var passwordData = try password.data(using: .utf8) ?? { throw NOXS_ERR.AUTHENTICATION }()
-                                        var cypherData = try Data(contentsOf: fileURL).filterBase64
-                                        let plaintext = try decrypt(password: &passwordData, ciphertext: &cypherData)
+                                        var cipherData = try Data(contentsOf: fileURL)
+                                        cipherData = try Data(base64Encoded: cipherData) ?? { throw DATA_ERR.FORMAT_BASE64 }()
+                                        let plaintext = try decrypt(password: &passwordData, ciphertext: &cipherData)
 
                                         do {
                                             let decoder = JSONDecoder()

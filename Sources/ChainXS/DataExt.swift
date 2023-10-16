@@ -95,19 +95,4 @@ extension Data {
     var right: Data {
         return subdata(in: count / 2 ..< count)
     }
-
-    var filterBase64: Data {
-        get throws {
-            let str = String(decoding: self, as: UTF8.self)
-            let lines = str.components(separatedBy: .newlines)
-            var b64str = ""
-
-            lines.forEach {
-                let line = $0.trimmingCharacters(in: .whitespaces)
-                if line != "", !line.hasPrefix("#") { b64str += line }
-            }
-
-            return try Data(base64Encoded: (b64str.filter { !$0.isWhitespace }).data(using: .utf8) ?? { throw DATA_ERR.FORMAT_BASE64 }()) ?? { throw DATA_ERR.FORMAT_BASE64 }()
-        }
-    }
 }
