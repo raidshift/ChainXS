@@ -1,0 +1,95 @@
+{
+  "object" : {
+    "artifacts" : [
+
+    ],
+    "dependencies" : [
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "noxs",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/raidshift/noxs",
+          "name" : "noxs"
+        },
+        "state" : {
+          "checkoutState" : {
+            "revision" : "06660487437c129d77540422d2e74675ff43e224",
+            "version" : "1.2.0"
+          },
+          "name" : "sourceControlCheckout"
+        },
+        "subpath" : "noxs"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "phc-winner-argon2",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/raidshift/phc-winner-argon2",
+          "name" : "argon2"
+        },
+        "state" : {
+          "checkoutState" : {
+            "revision" : "f57e61e19229e23c4445b85494dbf7c07de721cb",
+            "version" : "1.0.0"
+          },
+          "name" : "sourceControlCheckout"
+        },
+        "subpath" : "phc-winner-argon2"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "secp256k1.swift",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/Boilertalk/secp256k1.swift.git",
+          "name" : "secp256k1.swift"
+        },
+        "state" : {
+          "checkoutState" : {
+            "revision" : "cd187c632fb812fd93711a9f7e644adb7e5f97f0",
+            "version" : "0.1.7"
+          },
+          "name" : "sourceControlCheckout"
+        },
+        "subpath" : "secp256k1.swift"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "swift-crypto",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/apple/swift-crypto.git",
+          "name" : "swift-crypto"
+        },
+        "state" : {
+          "checkoutState" : {
+            "revision" : "60f13f60c4d093691934dc6cfdf5f508ada1f894",
+            "version" : "2.6.0"
+          },
+          "name" : "sourceControlCheckout"
+        },
+        "subpath" : "swift-crypto"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "swiftkeccak",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/bitflying/SwiftKeccak.git",
+          "name" : "SwiftKeccak"
+        },
+        "state" : {
+          "checkoutState" : {
+            "revision" : "5fc323d4b08a8c77cbb690505445b32a3b5a8aff",
+            "version" : "0.1.2"
+          },
+          "name" : "sourceControlCheckout"
+        },
+        "subpath" : "SwiftKeccak"
+      }
+    ]
+  },
+  "version" : 6
+}

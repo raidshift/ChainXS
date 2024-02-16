@@ -85,16 +85,19 @@ func createPubKey(privKey: Data, compress: Bool) throws -> Data {
     return Data(pubKeySerialized)
 }
 
+func HASH_160(_ data: Data) -> Data {
+    var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+    data.withUnsafeBytes {
+        _ = CC_SHA256($0.baseAddress, CC_LONG(data.count), &hash)
+    }
+
+    return RIPEMD160.hash(message: Data(bytes: &hash, count: hash.count))
+}
+
 func createP2PKHAddress(_ pubKey: Data) throws -> String {
     if !isValidPubKey(pubKey) { throw CHAINXS_ERR.INVALID_PUB_KEY }
 
-    var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
-
-    pubKey.withUnsafeBytes {
-        _ = CC_SHA256($0.baseAddress, CC_LONG(pubKey.count), &hash)
-    }
-
-    var pubAddress = Data([ChainXSContext.p2pkhPrefix] + [UInt8](RIPEMD160.hash(message: Data(bytes: &hash, count: hash.count))))
+    var pubAddress = Data([ChainXSContext.p2pkhPrefix] + [UInt8](HASH_160(pubKey)))
 
     return try appendChecksum(&pubAddress).base58CheckString
 }
@@ -102,19 +105,8 @@ func createP2PKHAddress(_ pubKey: Data) throws -> String {
 func createP2SH_P2WPKAddress(_ compressedPubKey: Data) throws -> String {
     if !isValidPubKey(compressedPubKey) || compressedPubKey.count != 33 { throw CHAINXS_ERR.INVALID_PUB_KEY }
 
-    var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
-
-    compressedPubKey.withUnsafeBytes {
-        _ = CC_SHA256($0.baseAddress, CC_LONG(compressedPubKey.count), &hash)
-    }
-
-    let redeemScript = Data(ChainXSContext.scriptCommand_OP_0 + [UInt8](RIPEMD160.hash(message: Data(bytes: &hash, count: hash.count))))
-
-    redeemScript.withUnsafeBytes {
-        _ = CC_SHA256($0.baseAddress, CC_LONG(redeemScript.count), &hash)
-    }
-
-    var pubAddress = Data([ChainXSContext.p2shPrefix] + [UInt8](RIPEMD160.hash(message: Data(bytes: &hash, count: hash.count))))
+    let redeemScript = Data(ChainXSContext.scriptCommand_OP_0 + [UInt8](HASH_160(compressedPubKey)))
+    var pubAddress = Data([ChainXSContext.p2shPrefix] + [UInt8](HASH_160(redeemScript)))
 
     return try appendChecksum(&pubAddress).base58CheckString
 }
@@ -122,13 +114,7 @@ func createP2SH_P2WPKAddress(_ compressedPubKey: Data) throws -> String {
 func createP2WPKHAddress(_ compressedPubKey: Data) throws -> String {
     if !isValidPubKey(compressedPubKey) || compressedPubKey.count != 33 { throw CHAINXS_ERR.INVALID_PUB_KEY }
 
-    var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
-
-    compressedPubKey.withUnsafeBytes {
-        _ = CC_SHA256($0.baseAddress, CC_LONG(compressedPubKey.count), &hash)
-    }
-
-    return try SegwitAddrCoder().encode(hrp: ChainXSContext.p2wpkhPrefix, version: ChainXSContext.p2wpkhVersion, program: Data([UInt8](RIPEMD160.hash(message: Data(bytes: &hash, count: hash.count)))))
+    return try SegwitAddrCoder().encode(hrp: ChainXSContext.p2wpkhPrefix, version: ChainXSContext.p2wpkhVersion, program: HASH_160(compressedPubKey))
 }
 
 func createETHAddress(_ uncompressedPubKey: Data) throws -> String {
@@ -154,4 +140,11 @@ func createTRXAddress(_ uncompressedPubKey: Data) throws -> String {
     p.append(hash2, count: 4)
 
     return p.base58CheckString
+}
+
+func createKASAddress(_ compressedPubKey: Data) throws -> String {
+    if !isValidPubKey(compressedPubKey) || compressedPubKey.count != 33 { throw CHAINXS_ERR.INVALID_PUB_KEY }
+
+    return Bech32Kaspa.encode(payload: Data([0]) + compressedPubKey, prefix: "kaspa")
+    // return try ChainXSContext.kaspaPrefix + ":" + (SegwitAddrCoder().encode(hrp: "x", version: ChainXSContext.kaspaVersion, program: HASH_160(compressedPubKey)))
 }

@@ -1,0 +1,48 @@
+---
+path:            '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/14.0/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule'
+dependencies:
+  - mtime:           1693507910000000000
+    path:            '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/prebuilt-modules/14.0/Dispatch.swiftmodule/x86_64-apple-macos.swiftmodule'
+    size:            187372
+  - mtime:           1693507096000000000
+    path:            'usr/lib/swift/Swift.swiftmodule/x86_64-apple-macos.swiftinterface'
+    size:            2057648
+    sdk_relative:    true
+  - mtime:           1691224649000000000
+    path:            'usr/include/Darwin.apinotes'
+    size:            1133
+    sdk_relative:    true
+  - mtime:           1691238296000000000
+    path:            'usr/lib/swift/Darwin.swiftmodule/x86_64-apple-macos.swiftinterface'
+    size:            31002
+    sdk_relative:    true
+  - mtime:           1691235153000000000
+    path:            'usr/lib/swift/_Concurrency.swiftmodule/x86_64-apple-macos.swiftinterface'
+    size:            147506
+    sdk_relative:    true
+  - mtime:           1691238391000000000
+    path:            'usr/lib/swift/_StringProcessing.swiftmodule/x86_64-apple-macos.swiftinterface'
+    size:            21926
+    sdk_relative:    true
+  - mtime:           1691238950000000000
+    path:            'System/Library/Frameworks/Combine.framework/Modules/Combine.swiftmodule/x86_64-apple-macos.swiftinterface'
+    size:            169351
+    sdk_relative:    true
+  - mtime:           1691245892000000000
+    path:            'usr/include/objc/ObjectiveC.apinotes'
+    size:            11147
+    sdk_relative:    true
+  - mtime:           1691227403000000000
+    path:            'usr/include/dispatch/Dispatch.apinotes'
+    size:            19
+    sdk_relative:    true
+  - mtime:           1691238918000000000
+    path:            'usr/lib/swift/ObjectiveC.swiftmodule/x86_64-apple-macos.swiftinterface'
+    size:            4675
+    sdk_relative:    true
+  - mtime:           1691239030000000000
+    path:            'usr/lib/swift/Dispatch.swiftmodule/x86_64-apple-macos.swiftinterface'
+    size:            56049
+    sdk_relative:    true
+version:         1
+...

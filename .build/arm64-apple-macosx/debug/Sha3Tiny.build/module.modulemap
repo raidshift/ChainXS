@@ -1,0 +1,4 @@
+module Sha3Tiny {
+    umbrella "/Users/laurenz/projects/ChainXS/.build/checkouts/SwiftKeccak/Sources/Sha3Tiny/include"
+    export *
+}

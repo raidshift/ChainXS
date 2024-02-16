@@ -224,6 +224,8 @@ struct HDNode: CustomStringConvertible {
             return try! createETHAddress(uncompressedPubKey)
         case TRX_ADDRESS_KEY:
             return try! createTRXAddress(uncompressedPubKey)
+        case KAS_ADDRESS_KEY:
+            return try! createKASAddress(compressedPubKey)
         case PRIV_KEY:
             return privKey!.hexString
         case WIF_KEY:

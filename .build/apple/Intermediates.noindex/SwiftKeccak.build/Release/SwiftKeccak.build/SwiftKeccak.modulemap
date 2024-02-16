@@ -1,0 +1,4 @@
+module SwiftKeccak {
+    header "SwiftKeccak-Swift.h"
+    export *
+}

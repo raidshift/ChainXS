@@ -168,6 +168,7 @@ struct ContentView: View {
                         Button(action: { derivationData.path = DERIVATION_PATHS[.BIP44_BTC_DERIVATION_PATH]!.path; derivationData.selectedLevel = DERIVATION_PATHS[.BIP44_BTC_DERIVATION_PATH]!.atLevel }) { Text(DERIVATION_PATHS[.BIP44_BTC_DERIVATION_PATH]!.desc) }
                         Button(action: { derivationData.path = DERIVATION_PATHS[.BIP44_ETH_DERIVATION_PATH]!.path; derivationData.selectedLevel = DERIVATION_PATHS[.BIP44_ETH_DERIVATION_PATH]!.atLevel }) { Text(DERIVATION_PATHS[.BIP44_ETH_DERIVATION_PATH]!.desc) }
                         Button(action: { derivationData.path = DERIVATION_PATHS[.BIP44_TRX_DERIVATION_PATH]!.path; derivationData.selectedLevel = DERIVATION_PATHS[.BIP44_TRX_DERIVATION_PATH]!.atLevel }) { Text(DERIVATION_PATHS[.BIP44_TRX_DERIVATION_PATH]!.desc) }
+                        Button(action: { derivationData.path = DERIVATION_PATHS[.BIP44_KAS_DERIVATION_PATH]!.path; derivationData.selectedLevel = DERIVATION_PATHS[.BIP44_KAS_DERIVATION_PATH]!.atLevel }) { Text(DERIVATION_PATHS[.BIP44_KAS_DERIVATION_PATH]!.desc) }
                         Divider()
                         Button(action: { derivationData.path = DERIVATION_PATHS[.BIP49_BTC_DERIVATION_PATH]!.path; derivationData.selectedLevel = DERIVATION_PATHS[.BIP49_BTC_DERIVATION_PATH]!.atLevel }) { Text(DERIVATION_PATHS[.BIP49_BTC_DERIVATION_PATH]!.desc) }
                         Divider()

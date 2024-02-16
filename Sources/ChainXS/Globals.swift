@@ -44,14 +44,15 @@ let YPUB_KEY = 5
 let ZPUB_KEY = 6
 let ETH_ADDRESS_KEY = 7
 let TRX_ADDRESS_KEY = 8
-let PRIV_KEY = 9
-let WIF_KEY = 10
-let XPRV_KEY = 11
-let YPRV_KEY = 12
-let ZPRV_KEY = 13
+let KAS_ADDRESS_KEY = 9
+let PRIV_KEY = 10
+let WIF_KEY = 11
+let XPRV_KEY = 12
+let YPRV_KEY = 13
+let ZPRV_KEY = 14
 
-let KEY_LAST_ELEMENT = 13
-let PRIV_KEYS_AFTER = 8
+let KEY_LAST_ELEMENT = 14
+let PRIV_KEYS_AFTER = 9
 
 let KEYS = [
     PUB_KEY: "Public Key",
@@ -63,6 +64,7 @@ let KEYS = [
     ZPUB_KEY: "Extended Public Key (zpub)",
     ETH_ADDRESS_KEY: "Ethereum Address",
     TRX_ADDRESS_KEY: "Tron Address",
+    KAS_ADDRESS_KEY: "Kaspa Address",
     PRIV_KEY: "Private Key",
     WIF_KEY: "Private Key (WIF)",
     XPRV_KEY: "Extended Private Key (xprv)",
@@ -76,6 +78,7 @@ enum DERIVATION_PATH {
     case BIP44_BTC_DERIVATION_PATH
     case BIP44_ETH_DERIVATION_PATH
     case BIP44_TRX_DERIVATION_PATH
+    case BIP44_KAS_DERIVATION_PATH
     case BIP49_BTC_DERIVATION_PATH
     case BIP84_BTC_DERIVATION_PATH
 }
@@ -87,6 +90,7 @@ let DERIVATION_PATHS: [DERIVATION_PATH: (path: String, atLevel: Int, desc: Strin
         .BIP44_BTC_DERIVATION_PATH: ("m/44'/0'/0'/0/0", 3, "BIP44 (Bitcoin)"),
         .BIP44_ETH_DERIVATION_PATH: ("m/44'/60'/0'/0/0", 3, "BIP44 (Ethereum)"),
         .BIP44_TRX_DERIVATION_PATH: ("m/44'/195'/0'/0/0", 3, "BIP44 (Tron)"),
+        .BIP44_KAS_DERIVATION_PATH: ("m/44'/111111'/0'/0/0", 3, "BIP44 (Kaspa)"),
         .BIP49_BTC_DERIVATION_PATH: ("m/49'/0'/0'/0/0", 3, "BIP49 (Bitcoin)"),
         .BIP84_BTC_DERIVATION_PATH: ("m/84'/0'/0'/0/0", 3, "BIP84 (Bitcoin)"),
     ]
@@ -100,6 +104,8 @@ enum ChainXSContext {
     static var p2wpkhVersion: Int!
     static var extendedPubKeyPrefixes: [ExtendedKeyPrefix: UInt32]!
     static var extendedPrivKeyPrefixes: [ExtendedKeyPrefix: UInt32]!
+    static var kaspaPrefix: String!
+    static var kaspaVersion: Int!
     static var wifPrefix: UInt8!
     static var trxPrefix: UInt8!
     static var scriptHashPrefix: UInt8!
@@ -117,6 +123,8 @@ enum ChainXSContext {
             ChainXSContext.wifPrefix = 0x80
             ChainXSContext.extendedPubKeyPrefixes = [.BIP32: 0x0488_B21E, .BIP49: 0x049D_7CB2, .BIP84: 0x04B2_4746]
             ChainXSContext.extendedPrivKeyPrefixes = [.BIP32: 0x0488_ADE4, .BIP49: 0x049D_7878, .BIP84: 0x04B2_430C]
+            ChainXSContext.kaspaPrefix = "kaspa"
+            ChainXSContext.kaspaVersion = 0
         case .TEST:
             ChainXSContext.p2pkhPrefix = 0x6F
             ChainXSContext.p2shPrefix = 0xCF
@@ -125,6 +133,8 @@ enum ChainXSContext {
             ChainXSContext.wifPrefix = 0xEF
             ChainXSContext.extendedPubKeyPrefixes = [.BIP32: 0x0435_87CF, .BIP49: 0x044A_5262, .BIP84: 0x045F_1CF6]
             ChainXSContext.extendedPrivKeyPrefixes = [.BIP32: 0x0435_8394, .BIP49: 0x044A_4E28, .BIP84: 0x045F_18BC]
+            ChainXSContext.kaspaPrefix = "kaspatest"
+            ChainXSContext.kaspaVersion = 0
         }
         ChainXSContext.trxPrefix = 0x41
         ChainXSContext.scriptCommand_OP_0 = [0x00, 0x14]

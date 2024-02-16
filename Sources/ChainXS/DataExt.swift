@@ -9,10 +9,12 @@ import Foundation
 enum DATA_ERR: Error {
     case CORE_RND
     case FORMAT_BASE64
+    case BITS_CONVERSION
 }
 
 let DATA_ERR_TEXT_FORMAT_BASE64 = "Input data is not base64 encoded"
 let DATA_ERR_CORE_RND = "Invoking random number generator failed"
+let DATA_ERR_BITS_CONVERSION = "Failed to perform bits conversion"
 
 extension DATA_ERR: LocalizedError {
     public var errorDescription: String? {
@@ -20,6 +22,8 @@ extension DATA_ERR: LocalizedError {
         case .CORE_RND:
             return NSLocalizedString(DATA_ERR_CORE_RND, comment: DATA_ERR_CORE_RND)
         case .FORMAT_BASE64:
+            return NSLocalizedString(DATA_ERR_TEXT_FORMAT_BASE64, comment: DATA_ERR_TEXT_FORMAT_BASE64)
+        case .BITS_CONVERSION:
             return NSLocalizedString(DATA_ERR_TEXT_FORMAT_BASE64, comment: DATA_ERR_TEXT_FORMAT_BASE64)
         }
     }
@@ -94,5 +98,29 @@ extension Data {
 
     var right: Data {
         return subdata(in: count / 2 ..< count)
+    }
+
+    func convertBits(from: Int, to: Int, pad: Bool) throws -> Data {
+        var acc = 0
+        var bits = 0
+        let maxv: Int = (1 << to) - 1
+        let maxAcc: Int = (1 << (from + to - 1)) - 1
+        var odata = Data()
+        for ibyte in self {
+            acc = ((acc << from) | Int(ibyte)) & maxAcc
+            bits += from
+            while bits >= to {
+                bits -= to
+                odata.append(UInt8((acc >> bits) & maxv))
+            }
+        }
+        if pad {
+            if bits != 0 {
+                odata.append(UInt8((acc << (to - bits)) & maxv))
+            }
+        } else if bits >= from || ((acc << (to - bits)) & maxv) != 0 {
+            throw DATA_ERR.BITS_CONVERSION
+        }
+        return odata
     }
 }

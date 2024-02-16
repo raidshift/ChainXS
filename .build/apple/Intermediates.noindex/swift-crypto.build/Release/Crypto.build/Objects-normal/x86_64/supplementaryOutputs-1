@@ -1,0 +1,9 @@
+"/Users/laurenz/projects/ChainXS/.build/checkouts/swift-crypto/Sources/Crypto/AEADs/AES/GCM/AES-GCM.swift":
+  const-values: "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/swift-crypto.build/Release/Crypto.build/Objects-normal/x86_64/Crypto-master.swiftconstvalues"
+  objc-header: "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/swift-crypto.build/Release/Crypto.build/Objects-normal/x86_64/Crypto-Swift.h"
+  swiftsourceinfo: "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/swift-crypto.build/Release/Crypto.build/Objects-normal/x86_64/Crypto.swiftsourceinfo"
+  swiftmodule: "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/swift-crypto.build/Release/Crypto.build/Objects-normal/x86_64/Crypto.swiftmodule"
+  dependencies: "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/swift-crypto.build/Release/Crypto.build/Objects-normal/x86_64/Crypto-master.d"
+  diagnostics: "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/swift-crypto.build/Release/Crypto.build/Objects-normal/x86_64/Crypto-master.dia"
+  abi-baseline-json: "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/swift-crypto.build/Release/Crypto.build/Objects-normal/x86_64/Crypto.abi.json"
+  swiftdoc: "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/swift-crypto.build/Release/Crypto.build/Objects-normal/x86_64/Crypto.swiftdoc"

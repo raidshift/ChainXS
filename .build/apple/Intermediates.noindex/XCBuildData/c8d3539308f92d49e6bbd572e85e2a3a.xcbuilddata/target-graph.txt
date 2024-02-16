@@ -1,0 +1,35 @@
+Target dependency graph (15 targets)
+Target 'AllExcludingTests' in project 'Aggregate'
+➜ Explicit dependency on target 'ChainXS_3121276D7DE70B15_PackageProduct' in project 'ChainXS'
+Target 'ChainXS_3121276D7DE70B15_PackageProduct' in project 'ChainXS'
+➜ Explicit dependency on target 'NoXS_656A6482C_PackageProduct' in project 'NoXS'
+➜ Explicit dependency on target 'SwiftKeccak_-6A6F8396B24120A6_PackageProduct' in project 'SwiftKeccak'
+➜ Explicit dependency on target 'secp256k1_1E76FEA4DF3A48ED_PackageProduct' in project 'secp256k1'
+Target 'secp256k1_1E76FEA4DF3A48ED_PackageProduct' in project 'secp256k1'
+➜ Explicit dependency on target 'libsecp256k1' in project 'secp256k1'
+➜ Explicit dependency on target 'secp256k1' in project 'secp256k1'
+Target 'secp256k1' in project 'secp256k1'
+➜ Explicit dependency on target 'libsecp256k1' in project 'secp256k1'
+Target 'libsecp256k1' in project 'secp256k1' (no dependencies)
+Target 'SwiftKeccak_-6A6F8396B24120A6_PackageProduct' in project 'SwiftKeccak'
+➜ Explicit dependency on target 'KeccakTiny' in project 'SwiftKeccak'
+➜ Explicit dependency on target 'Sha3Tiny' in project 'SwiftKeccak'
+➜ Explicit dependency on target 'SwiftKeccak' in project 'SwiftKeccak'
+Target 'SwiftKeccak' in project 'SwiftKeccak'
+➜ Explicit dependency on target 'KeccakTiny' in project 'SwiftKeccak'
+➜ Explicit dependency on target 'Sha3Tiny' in project 'SwiftKeccak'
+Target 'Sha3Tiny' in project 'SwiftKeccak' (no dependencies)
+Target 'KeccakTiny' in project 'SwiftKeccak' (no dependencies)
+Target 'NoXS_656A6482C_PackageProduct' in project 'NoXS'
+➜ Explicit dependency on target 'NoXS' in project 'NoXS'
+➜ Explicit dependency on target 'Crypto_17A3B1FFC41E47_PackageProduct' in project 'swift-crypto'
+➜ Explicit dependency on target 'argon2_1F680FD80F680F_PackageProduct' in project 'argon2'
+Target 'NoXS' in project 'NoXS'
+➜ Explicit dependency on target 'Crypto_17A3B1FFC41E47_PackageProduct' in project 'swift-crypto'
+➜ Explicit dependency on target 'argon2_1F680FD80F680F_PackageProduct' in project 'argon2'
+Target 'argon2_1F680FD80F680F_PackageProduct' in project 'argon2'
+➜ Explicit dependency on target 'argon2' in project 'argon2'
+Target 'argon2' in project 'argon2' (no dependencies)
+Target 'Crypto_17A3B1FFC41E47_PackageProduct' in project 'swift-crypto'
+➜ Explicit dependency on target 'Crypto' in project 'swift-crypto'
+Target 'Crypto' in project 'swift-crypto' (no dependencies)

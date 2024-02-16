@@ -1,0 +1,18 @@
+version: "Apple Swift version 5.9 (swiftlang-5.9.0.128.108 clang-1500.0.40.1)"
+options: "4efe4561e12e094b6b82d79a8e218cbb98b931fa105acc7a2d267968c1d8bad1"
+build_start_time: [1697439560, 255281000]
+build_end_time: [1697439576, 616237000]
+inputs:
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/AddressUtils.swift": [1695646221, 309527880]
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/ArrayExt.swift": [1695301251, 492273560]
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/Bech32.swift": [1695301251, 492411517]
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/ChainXSApp.swift": [1695646221, 309623129]
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/ContentView.swift": [1697438821, 865048336]
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/DataExt.swift": [1697436811, 718002748]
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/DerivationPath.swift": [1695301251, 492995886]
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/Globals.swift": [1695646221, 310217078]
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/HDNode.swift": [1696618233, 654954256]
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/RIPEMD.swift": [1695301251, 493633255]
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/SegwitAddrCoder.swift": [1695301251, 493763837]
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/StringExt.swift": [1697436798, 504660579]
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/WordListEN.swift": [1695301251, 494126875]

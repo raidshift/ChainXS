@@ -1,0 +1,6 @@
+version: "Apple Swift version 5.9 (swiftlang-5.9.0.128.108 clang-1500.0.40.1)"
+options: "47bcf154ad97ee977858a2dbf8085b7cf0156022a58a961336410b976367f8f8"
+build_start_time: [1697439558, 33857000]
+build_end_time: [1697439560, 280292000]
+inputs:
+  "/Users/laurenz/projects/ChainXS/.build/checkouts/noxs/Sources/Lib/NoXS.swift": [1697439541, 564151693]

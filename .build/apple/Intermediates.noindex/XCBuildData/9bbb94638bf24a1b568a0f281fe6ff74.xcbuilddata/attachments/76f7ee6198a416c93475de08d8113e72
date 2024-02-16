@@ -1,0 +1,75 @@
+{
+  "" : {
+    "const-values" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/ChainXS-master.swiftconstvalues",
+    "dependencies" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/ChainXS-master.d",
+    "diagnostics" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/ChainXS-master.dia",
+    "emit-module-dependencies" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/ChainXS-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/ChainXS-master-emit-module.dia",
+    "swift-dependencies" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/ChainXS-master.swiftdeps"
+  },
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/AddressUtils.swift" : {
+    "index-unit-output-path" : "/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/AddressUtils.o",
+    "llvm-bc" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/AddressUtils.bc",
+    "object" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/AddressUtils.o"
+  },
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/ArrayExt.swift" : {
+    "index-unit-output-path" : "/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/ArrayExt.o",
+    "llvm-bc" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/ArrayExt.bc",
+    "object" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/ArrayExt.o"
+  },
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/Bech32.swift" : {
+    "index-unit-output-path" : "/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/Bech32.o",
+    "llvm-bc" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/Bech32.bc",
+    "object" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/Bech32.o"
+  },
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/ChainXSApp.swift" : {
+    "index-unit-output-path" : "/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/ChainXSApp.o",
+    "llvm-bc" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/ChainXSApp.bc",
+    "object" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/ChainXSApp.o"
+  },
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/ContentView.swift" : {
+    "index-unit-output-path" : "/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/ContentView.o",
+    "llvm-bc" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/ContentView.bc",
+    "object" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/ContentView.o"
+  },
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/DataExt.swift" : {
+    "index-unit-output-path" : "/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/DataExt.o",
+    "llvm-bc" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/DataExt.bc",
+    "object" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/DataExt.o"
+  },
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/DerivationPath.swift" : {
+    "index-unit-output-path" : "/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/DerivationPath.o",
+    "llvm-bc" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/DerivationPath.bc",
+    "object" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/DerivationPath.o"
+  },
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/Globals.swift" : {
+    "index-unit-output-path" : "/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/Globals.o",
+    "llvm-bc" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/Globals.bc",
+    "object" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/Globals.o"
+  },
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/HDNode.swift" : {
+    "index-unit-output-path" : "/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/HDNode.o",
+    "llvm-bc" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/HDNode.bc",
+    "object" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/HDNode.o"
+  },
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/RIPEMD.swift" : {
+    "index-unit-output-path" : "/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/RIPEMD.o",
+    "llvm-bc" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/RIPEMD.bc",
+    "object" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/RIPEMD.o"
+  },
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/SegwitAddrCoder.swift" : {
+    "index-unit-output-path" : "/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/SegwitAddrCoder.o",
+    "llvm-bc" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/SegwitAddrCoder.bc",
+    "object" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/SegwitAddrCoder.o"
+  },
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/StringExt.swift" : {
+    "index-unit-output-path" : "/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/StringExt.o",
+    "llvm-bc" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/StringExt.bc",
+    "object" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/StringExt.o"
+  },
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/WordListEN.swift" : {
+    "index-unit-output-path" : "/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/WordListEN.o",
+    "llvm-bc" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/WordListEN.bc",
+    "object" : "/Users/laurenz/projects/ChainXS/.build/apple/Intermediates.noindex/ChainXS.build/Release/ChainXS.build/Objects-normal/x86_64/WordListEN.o"
+  }
+}

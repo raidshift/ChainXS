@@ -1,0 +1,4 @@
+module NoXS {
+    header "NoXS-Swift.h"
+    export *
+}

@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "name": "Debug ChainXS",
+            "program": "${workspaceFolder:ChainXS}/.build/debug/ChainXS",
+            "args": [],
+            "cwd": "${workspaceFolder:ChainXS}",
+            "preLaunchTask": "swift: Build Debug ChainXS"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "name": "Release ChainXS",
+            "program": "${workspaceFolder:ChainXS}/.build/release/ChainXS",
+            "args": [],
+            "cwd": "${workspaceFolder:ChainXS}",
+            "preLaunchTask": "swift: Build Release ChainXS"
+        }
+    ]
+}

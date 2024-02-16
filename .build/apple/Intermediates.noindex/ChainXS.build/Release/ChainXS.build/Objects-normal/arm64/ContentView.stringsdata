@@ -1,0 +1,76 @@
+{
+  "source": "/Users/laurenz/projects/ChainXS/Sources/ChainXS/ContentView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Mnemonic Passphrase"
+      },
+      {
+        "comment": "",
+        "key": "Mnemonic or Extended Key"
+      },
+      {
+        "comment": "",
+        "key": "🎲 12"
+      },
+      {
+        "comment": "",
+        "key": "🎲 18"
+      },
+      {
+        "comment": "",
+        "key": "🎲 24"
+      },
+      {
+        "comment": "",
+        "key": "✖️"
+      },
+      {
+        "comment": "",
+        "key": "🔐"
+      },
+      {
+        "comment": "",
+        "key": "🔓"
+      },
+      {
+        "comment": "",
+        "key": "OK"
+      },
+      {
+        "comment": "",
+        "key": "Derivation Path"
+      },
+      {
+        "comment": "",
+        "key": "..."
+      },
+      {
+        "comment": "",
+        "key": "Derive level"
+      },
+      {
+        "comment": "",
+        "key": "%lld"
+      },
+      {
+        "comment": "",
+        "key": "Columns"
+      },
+      {
+        "comment": "",
+        "key": "Rows"
+      },
+      {
+        "comment": "",
+        "key": "%@ ✖️"
+      },
+      {
+        "comment": "",
+        "key": "+"
+      }
+    ]
+  },
+  "version": 1
+}
