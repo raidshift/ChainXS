@@ -14,11 +14,11 @@
     "swiftmodule": "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/ArrayExt~partial.swiftmodule",
     "swift-dependencies": "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/ArrayExt.swiftdeps"
   },
-  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/Bech32Kaspa.swift": {
-    "dependencies": "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/Bech32Kaspa.d",
-    "object": "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/Bech32Kaspa.swift.o",
-    "swiftmodule": "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/Bech32Kaspa~partial.swiftmodule",
-    "swift-dependencies": "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/Bech32Kaspa.swiftdeps"
+  "/Users/laurenz/projects/ChainXS/Sources/ChainXS/Bech32CashAddr.swift": {
+    "dependencies": "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/Bech32CashAddr.d",
+    "object": "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/Bech32CashAddr.swift.o",
+    "swiftmodule": "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/Bech32CashAddr~partial.swiftmodule",
+    "swift-dependencies": "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/Bech32CashAddr.swiftdeps"
   },
   "/Users/laurenz/projects/ChainXS/Sources/ChainXS/Bech32Segwit.swift": {
     "dependencies": "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/Bech32Segwit.d",

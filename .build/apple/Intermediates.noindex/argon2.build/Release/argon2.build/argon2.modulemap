@@ -1,4 +1,0 @@
-module argon2 {
-    umbrella "/Users/laurenz/projects/ChainXS/.build/checkouts/phc-winner-argon2/include"
-    export *
-}

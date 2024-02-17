@@ -1,6 +1,0 @@
-version: "Apple Swift version 5.9 (swiftlang-5.9.0.128.108 clang-1500.0.40.1)"
-options: "10788a20077b1d846c01107192c51ecdd95cabc6c0329fe87127a58eb6bd7d25"
-build_start_time: [1697439555, 40404000]
-build_end_time: [1697439558, 70425000]
-inputs:
-  "/Users/laurenz/projects/ChainXS/.build/checkouts/SwiftKeccak/Sources/SwiftKeccak/Keccak.swift": [1697439540, 483022831]

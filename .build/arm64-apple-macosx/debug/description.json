@@ -1910,7 +1910,7 @@
         },
         {
           "kind" : "file",
-          "name" : "/Users/laurenz/projects/ChainXS/Sources/ChainXS/Bech32Kaspa.swift"
+          "name" : "/Users/laurenz/projects/ChainXS/Sources/ChainXS/Bech32CashAddr.swift"
         },
         {
           "kind" : "file",
@@ -1975,7 +1975,7 @@
       "objects" : [
         "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/AddressUtils.swift.o",
         "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/ArrayExt.swift.o",
-        "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/Bech32Kaspa.swift.o",
+        "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/Bech32CashAddr.swift.o",
         "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/Bech32Segwit.swift.o",
         "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/ChainXSApp.swift.o",
         "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/ContentView.swift.o",
@@ -2066,7 +2066,7 @@
         },
         {
           "kind" : "file",
-          "name" : "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/Bech32Kaspa.swift.o"
+          "name" : "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/ChainXS.build/Bech32CashAddr.swift.o"
         },
         {
           "kind" : "file",
@@ -2120,7 +2120,7 @@
       "sources" : [
         "/Users/laurenz/projects/ChainXS/Sources/ChainXS/AddressUtils.swift",
         "/Users/laurenz/projects/ChainXS/Sources/ChainXS/ArrayExt.swift",
-        "/Users/laurenz/projects/ChainXS/Sources/ChainXS/Bech32Kaspa.swift",
+        "/Users/laurenz/projects/ChainXS/Sources/ChainXS/Bech32CashAddr.swift",
         "/Users/laurenz/projects/ChainXS/Sources/ChainXS/Bech32Segwit.swift",
         "/Users/laurenz/projects/ChainXS/Sources/ChainXS/ChainXSApp.swift",
         "/Users/laurenz/projects/ChainXS/Sources/ChainXS/ContentView.swift",
@@ -5004,7 +5004,7 @@
       "-c",
       "/Users/laurenz/projects/ChainXS/Sources/ChainXS/AddressUtils.swift",
       "/Users/laurenz/projects/ChainXS/Sources/ChainXS/ArrayExt.swift",
-      "/Users/laurenz/projects/ChainXS/Sources/ChainXS/Bech32Kaspa.swift",
+      "/Users/laurenz/projects/ChainXS/Sources/ChainXS/Bech32CashAddr.swift",
       "/Users/laurenz/projects/ChainXS/Sources/ChainXS/Bech32Segwit.swift",
       "/Users/laurenz/projects/ChainXS/Sources/ChainXS/ChainXSApp.swift",
       "/Users/laurenz/projects/ChainXS/Sources/ChainXS/ContentView.swift",

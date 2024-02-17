@@ -27,7 +27,7 @@
           "identity" : "phc-winner-argon2",
           "kind" : "remoteSourceControl",
           "location" : "https://github.com/raidshift/phc-winner-argon2",
-          "name" : "argon2"
+          "name" : "phc-winner-argon2"
         },
         "state" : {
           "checkoutState" : {

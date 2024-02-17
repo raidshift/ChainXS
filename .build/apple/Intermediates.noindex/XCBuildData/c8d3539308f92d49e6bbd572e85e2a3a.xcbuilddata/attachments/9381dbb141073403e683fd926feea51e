@@ -1,4 +1,0 @@
-module KeccakTiny {
-    umbrella "/Users/laurenz/projects/ChainXS/.build/checkouts/SwiftKeccak/Sources/KeccakTiny/include"
-    export *
-}
