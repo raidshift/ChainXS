@@ -1,4 +1,0 @@
-module NoXS {
-    header "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/NoXS.build/NoXS-Swift.h"
-    requires objc
-}

@@ -1,4 +1,0 @@
-module argon2 {
-    umbrella header "/Users/laurenz/projects/ChainXS/.build/checkouts/phc-winner-argon2/include/argon2.h"
-    export *
-}

@@ -1,4 +1,0 @@
-module _CryptoExtras {
-    header "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/_CryptoExtras.build/_CryptoExtras-Swift.h"
-    requires objc
-}

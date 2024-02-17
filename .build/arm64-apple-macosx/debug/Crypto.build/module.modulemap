@@ -1,4 +1,0 @@
-module Crypto {
-    header "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/Crypto.build/Crypto-Swift.h"
-    requires objc
-}

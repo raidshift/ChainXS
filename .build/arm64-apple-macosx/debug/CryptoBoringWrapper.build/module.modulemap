@@ -1,4 +1,0 @@
-module CryptoBoringWrapper {
-    header "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/CryptoBoringWrapper.build/CryptoBoringWrapper-Swift.h"
-    requires objc
-}

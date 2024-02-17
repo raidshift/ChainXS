@@ -1,4 +1,0 @@
-module SwiftKeccak {
-    header "/Users/laurenz/projects/ChainXS/.build/arm64-apple-macosx/debug/SwiftKeccak.build/SwiftKeccak-Swift.h"
-    requires objc
-}
