@@ -4,7 +4,7 @@ ChainXS is a macOS application built in Swift which facilitates derivation of se
 ![image](https://github.com/raidshift/ChainXS/assets/51262620/0148f0ed-b844-4280-b3bc-0dbc89b86c2a)
 
 ### Input
-* BIP39 mnemonic (consisting of 12, 15, 18, 21 or 24 words) & optional passphrase
+* BIP39 mnemonic (12, 15, 18, 21 or 24 words) with optional passphrase
 * BIP32, BIP49 or BIP84 extended public key (xpub, ypub, zpub)
 * BIP32, BIP49 or BIP84 extended private key (xprv, yprv, zpprv)
 
