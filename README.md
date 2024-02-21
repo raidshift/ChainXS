@@ -23,6 +23,7 @@ Public
 * Extended public key (zpub)
 * Ethereum address
 * Tron address
+* Kaspa address
 
 Private
 * Private key
