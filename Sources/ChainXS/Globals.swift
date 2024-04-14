@@ -57,7 +57,7 @@ let PRIV_KEYS_AFTER = 9
 let KEYS = [
     PUB_KEY: "Public Key",
     P2PKH_KEY: "Bitcoin Address (P2PKH)",
-    P2SH_P2WPK_KEY: "Bitcoin Address (P2PKH-P2WPK)",
+    P2SH_P2WPK_KEY: "Bitcoin Address (P2SH-P2WPK)",
     P2WPKH_KEY: "Bitcoin Address (P2WPKH)",
     XPUB_KEY: "Extended Public Key (xpub)",
     YPUB_KEY: "Extended Public Key (ypub)",

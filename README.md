@@ -16,7 +16,7 @@ ChainXS is a macOS application built in Swift which facilitates derivation of se
 Public
 * Public key
 * Bitcoin address (P2PKH)
-* Bitcoin address (P2PKH-P2WPK)
+* Bitcoin address (P2SH-P2WPK)
 * Bitcoin address (P2WPKH)
 * Extended public key (xpub)
 * Extended public key (ypub)
