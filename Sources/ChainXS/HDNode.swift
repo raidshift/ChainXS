@@ -218,14 +218,16 @@ struct HDNode: CustomStringConvertible {
             return p2pkh + String(repeating: " ", count: 34 - p2pkh.count)
         case P2WPKH_KEY:
             return try! createP2WPKHAddress(compressedPubKey)
-        case P2SH_P2WPK_KEY:
-            return try! createP2SH_P2WPKAddress(compressedPubKey)
+        // case P2SH_P2WPK_KEY:
+        //     return try! createP2SH_P2WPKAddress(compressedPubKey)
         case ETH_ADDRESS_KEY:
             return try! createETHAddress(uncompressedPubKey)
         case TRX_ADDRESS_KEY:
             return try! createTRXAddress(uncompressedPubKey)
         case KAS_ADDRESS_KEY:
-            return try! createKASAddress(compressedPubKey)
+            return try! createKASAddress(compressedPubKey,test: false)
+        case KAS_TEST_ADDRESS_KEY:
+            return try! createKASAddress(compressedPubKey,test: true)
         case PRIV_KEY:
             return privKey!.hexString
         case WIF_KEY:

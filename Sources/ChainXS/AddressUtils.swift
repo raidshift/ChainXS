@@ -142,8 +142,8 @@ func createTRXAddress(_ uncompressedPubKey: Data) throws -> String {
     return p.base58CheckString
 }
 
-func createKASAddress(_ compressedPubKey: Data) throws -> String {
+func createKASAddress(_ compressedPubKey: Data, test: Bool) throws -> String {
     if !isValidPubKey(compressedPubKey) || compressedPubKey.count != 33 { throw CHAINXS_ERR.INVALID_PUB_KEY }
 
-    return Bech32CashAddr.encode(payload: Data([0]) + compressedPubKey.dropFirst(), prefix: "kaspa")
+    return Bech32CashAddr.encode(payload: Data([0]) + compressedPubKey.dropFirst(), prefix: test ? ChainXSContext.kaspaTestPrefix:ChainXSContext.kaspaPrefix)
 }
