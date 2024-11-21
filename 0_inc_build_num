@@ -1,0 +1,6 @@
+#!/bin/sh
+
+buildNum=$(plutil -extract CFBundleVersion raw -o - ./Resources/Info.plist)
+incr=1
+buildNum=`expr $buildNum + $incr`
+plutil -replace CFBundleVersion -string "$buildNum" ./Resources/Info.plist
