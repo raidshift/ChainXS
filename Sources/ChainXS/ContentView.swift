@@ -69,15 +69,15 @@ struct ContentView: View {
                     HStack {
                         CustomTextField(title: "enter password ...", text: $password).foregroundColor(SUCCESS).disabled(isDisabledTextField).frame(width: 120)
                         Button(action: {
-                            let messageContainer = MessageContainer(key: userProvidedKeys.key, passphrase: userProvidedKeys.passphrase, path: derivationData.path, level: derivationData.selectedLevel)
+                            let messageContainer = MessageContainer(key: userProvidedKeys.key.trimmingCharacters(in: .whitespaces), passphrase: userProvidedKeys.passphrase, path: derivationData.path, level: derivationData.selectedLevel)
 
                             let encoder = JSONEncoder()
                             encoder.outputFormatting = [.prettyPrinted, .withoutEscapingSlashes]
 
                             do {
                                 var passwordData = try password.data(using: .utf8) ?? { throw NOXS_ERR.AUTHENTICATION }()
-                                var cypherData = try encoder.encode(messageContainer)
-                                let ciphertext = try encrypt(password: &passwordData, plaintext: &cypherData)
+                                var cipherData: Data = try encoder.encode(messageContainer)
+                                let ciphertext: Data = try encrypt(password: &passwordData, plaintext: &cipherData)
                                 document = EncDocument(text: ciphertext.base64EncodedString())
                                 exporting = true
                             } catch {
@@ -244,6 +244,7 @@ struct ContentView: View {
                     derivationData.isPrivate = true
                     derivationData.isExtendedKey = false
                     mnemonicColor = SUCCESS
+                    userProvidedKeys.key = userProvidedKeys.key.lowercased()
 
                 } catch {
                     do {
