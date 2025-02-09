@@ -5,8 +5,8 @@
 //  Created by raidshift
 //
 
-import SwiftUI
 import NoXS
+import SwiftUI
 
 extension NSTextField {
     override open var focusRingType: NSFocusRingType {
@@ -148,6 +148,18 @@ struct ContentView: View {
                 }
                 CustomTextField(title: "enter mnemonic or extended key ...", text: $userProvidedKeys.key)
                     .foregroundColor(mnemonicColor)
+                    .onChange(of: userProvidedKeys.key) { newValue in
+                        // Filter to allow only letters, numbers and spaces
+                        let filtered = newValue.filter { $0.isLetter || $0.isNumber || $0.isWhitespace }
+
+                        // Tokenize by splitting on whitespace and filter out empty strings
+                        let tokens = filtered.split { $0.isWhitespace }
+                            .map(String.init)
+                            .filter { !$0.isEmpty }
+
+                        // Rejoin with single spaces and preserve trailing space if it exists
+                        userProvidedKeys.key = tokens.joined(separator: " ") + (newValue.hasSuffix(" ") ? " " : "")
+                    }
                     .disabled(isDisabledTextField)
                     .padding(8)
                 if !derivationData.isExtendedKey && mnemonicColor != FAILURE {
@@ -227,12 +239,12 @@ struct ContentView: View {
             }
             .padding(.horizontal)
             .onChange(of: userProvidedKeys) { _ in
-
                 do {
                     derivationData.key = try createMnemonicSeed(mnemonic: userProvidedKeys.key, passPhrase: userProvidedKeys.passphrase)
                     derivationData.isPrivate = true
                     derivationData.isExtendedKey = false
                     mnemonicColor = SUCCESS
+
                 } catch {
                     do {
                         let extendedKey = try decomposeExtendedKey(extendedKey: userProvidedKeys.key)
@@ -252,7 +264,7 @@ struct ContentView: View {
                         mnemonicColor = FAILURE
                     }
                 }
-                results = []
+                if mnemonicColor != SUCCESS { results = [] }
             }
             .onChange(of: derivationData) { _ in
                 do {
@@ -263,7 +275,7 @@ struct ContentView: View {
                     derivationData.maxLevel = decomomposedDerivationPath.pathNodeIndexes.count
 
                     if !decomomposedDerivationPath.isPrivate {
-                        derivationData.selectedKeys.forEach { key in
+                        for key in derivationData.selectedKeys {
                             if key > PRIV_KEYS_AFTER {
                                 derivationData.selectedKeys.removeAll { value in value == key }
                             }
