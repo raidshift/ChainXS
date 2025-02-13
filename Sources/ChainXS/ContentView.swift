@@ -5,7 +5,6 @@
 //  Created by raidshift
 //
 
-import NoXS
 import SwiftUI
 
 extension NSTextField {
@@ -75,9 +74,9 @@ struct ContentView: View {
                             encoder.outputFormatting = [.prettyPrinted, .withoutEscapingSlashes]
 
                             do {
-                                var passwordData = try password.data(using: .utf8) ?? { throw NOXS_ERR.AUTHENTICATION }()
+                                var passwordData = try password.data(using: .utf8) ?? { throw NOXS_ERR.DATA }()
                                 var cipherData: Data = try encoder.encode(messageContainer)
-                                let ciphertext: Data = try encrypt(password: &passwordData, plaintext: &cipherData)
+                                let ciphertext: Data = try encrypt(password: &passwordData, plaintext: &cipherData, ver: .X)
                                 document = EncDocument(text: ciphertext.base64EncodedString())
                                 exporting = true
                             } catch {
@@ -115,7 +114,7 @@ struct ContentView: View {
                                         defer { if didStartAccessing { fileURL.stopAccessingSecurityScopedResource() }}
                                         let resourceValues = try fileURL.resourceValues(forKeys: [.fileSizeKey])
                                         if try resourceValues.fileSize ?? { throw FILE_ERR.READ_SIZE }() > MAX_FILE_SIZE { throw FILE_ERR.SIZE }
-                                        var passwordData = try password.data(using: .utf8) ?? { throw NOXS_ERR.AUTHENTICATION }()
+                                        var passwordData = try password.data(using: .utf8) ?? { throw NOXS_ERR.DATA }()
                                         var cipherData = try Data(contentsOf: fileURL)
                                         cipherData = try Data(base64Encoded: cipherData) ?? { throw DATA_ERR.FORMAT_BASE64 }()
                                         let plaintext = try decrypt(password: &passwordData, ciphertext: &cipherData)
@@ -129,7 +128,7 @@ struct ContentView: View {
                                             derivationData.selectedLevel = message.level
                                             password = ""
                                         } catch {
-                                            throw NOXS_ERR.AUTHENTICATION
+                                            throw NOXS_ERR.DATA
                                         }
 
                                     } catch {
