@@ -35,7 +35,7 @@ Private
 
 ### File export
 * ChainXS allows encrypted file export and import of mnemonic or extended key and derivation path
-* Using strong authenticated encryption and password-based key derivation from https://github.com/raidshift/noxs
+* Using strong authenticated encryption (via XChaCha20Poly1305) and password-based key derivation (via Argon2id)
 
 ### Download precompiled App 
 * https://github.com/raidshift/ChainXS/releases
