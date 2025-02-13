@@ -1,9 +1,10 @@
 #!/bin/sh
 
-buildNum=$(plutil -extract CFBundleVersion raw -o - ./Resources/Info.plist)
+buildNumLeft=$(plutil -extract CFBundleShortVersionString raw -o - ./Resources/Info.plist)
+buildNumRight=$(plutil -extract CFBundleVersion raw -o - ./Resources/Info.plist)
 
 GPG_TTY=$(tty)
 
 git add .
-git commit -S -m "1.1.$buildNum"
+git commit -S -m "$buildNumLeft.$buildNumRight"
 git push
